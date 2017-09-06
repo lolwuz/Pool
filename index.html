@@ -22,8 +22,14 @@
     document.body.appendChild( renderer.domElement );
 
 
-    var ball1 = new Ball();
-    scene.add( ball1 );
+    var ball1 = new Ball(0xFFFFFF, {x: 0, y: 0});
+    var ball2 = new Ball(0xFFFFFF, {x: 0, y: 3});
+
+    scene.add(ball1);
+    scene.add(ball2);
+
+
+    var ballArray = [ ball1, ball2];
 
     // Light
     var ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.0);
@@ -34,9 +40,17 @@
     function animate(){
         requestAnimationFrame( animate );
 
+        for (var i = 0; i < ballArray; i++) {
+            ballArray[i].checkCollision();
+        }
+
+        for (var i = 0; i < ballArray; i++) {
+            ballArray[i].move();
+        }
 
         renderer.render(scene, camera);
     }
+
     animate();
 </script>
 </body>
