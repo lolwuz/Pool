@@ -23,29 +23,43 @@
 
 
     var ball1 = new Ball(0xFFFFFF, {x: 0, y: 0});
-    var ball2 = new Ball(0xFFFFFF, {x: 0, y: 3});
+    var ball2 = new Ball(0xFFFFFF, {x: 5, y: 5});
+
 
     scene.add(ball1);
     scene.add(ball2);
+   
 
 
     var ballArray = [ ball1, ball2];
+
+   
 
     // Light
     var ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.0);
     scene.add(ambientLight);
 
-    camera.position.z = 5;
+    camera.position.z = 16;
+
+    ball1.speed.x = 0.05;
+    ball1.speed.y = 0.05;
+
+    let clock = new THREE.Clock(); 
 
     function animate(){
         requestAnimationFrame( animate );
+        let deltaTime = 60 * clock.getDelta();
 
-        for (var i = 0; i < ballArray; i++) {
-            ballArray[i].checkCollision();
+        for (var i = 0; i < ballArray.length; i++) {
+            for(var ii=0; ii < ballArray.length; ii++){
+                if(ballArray[i] !== ballArray[ii]){
+                    ballArray[i].checkCollision(ballArray[ii]);
+                }
+            }
         }
 
-        for (var i = 0; i < ballArray; i++) {
-            ballArray[i].move();
+        for (var i = 0; i < ballArray.length; i++) {
+            ballArray[i].move(deltaTime);
         }
 
         renderer.render(scene, camera);
