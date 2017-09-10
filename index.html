@@ -14,7 +14,7 @@
 <script>
     // Our Javascript will go here.
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
     var renderer = new THREE.WebGLRenderer({antialias:true});
     renderer.setClearColor(0xCCCCFF, 1);
@@ -22,27 +22,59 @@
     document.body.appendChild( renderer.domElement );
 
 
-    var ball1 = new Ball(0xFFFFFF, {x: 0, y: 0});
-    var ball2 = new Ball(0xFFFFFF, {x: 5, y: 5});
+    var ball1 = new Ball(0xFFFFFF, {x: 0, y: -5}); // White ball
+    var ball2 = new Ball(0xFFFFFF, {x: 0, y: 5});
+    var ball3 = new Ball(0xFFFFFF, {x: -0.51, y: 6});
+    var ball4 = new Ball(0xFFFFFF, {x: 0.51, y: 6});
+    var ball5 = new Ball(0xFFFFFF, {x: -1.01, y: 7});
+    var ball6 = new Ball(0xFFFFFF, {x: 0, y: 7});
+    var ball7 = new Ball(0xFFFFFF, {x: 1.01, y: 7});
+    var ball8 = new Ball(0xFFFFFF, {x: -1.53, y: 8});
+    var ball9 = new Ball(0xFFFFFF, {x: -0.51, y: 8});
+    var ball10 = new Ball(0xFFFFFF, {x: 0.51, y: 8});
+    var ball11 = new Ball(0xFFFFFF, {x: 1.53, y: 8});
+    var ball12 = new Ball(0xFFFFFF, {x: -2.02, y: 9});
+    var ball13 = new Ball(0xFFFFFF, {x: -1.01, y: 9});
+    var ball14 = new Ball(0xFFFFFF, {x: 0, y: 9});
+    var ball15 = new Ball(0xFFFFFF, {x: 1.01, y: 9});
+    var ball16 = new Ball(0xFFFFFF, {x: 2.02, y: 9});
 
 
     scene.add(ball1);
     scene.add(ball2);
-   
+    scene.add(ball3);
+    scene.add(ball4);
+    scene.add(ball5);
+    scene.add(ball6);
+    scene.add(ball7);
+    scene.add(ball8);
+    scene.add(ball9);
+    scene.add(ball10);
+    scene.add(ball11);
+    scene.add(ball12);
+    scene.add(ball13);
+    scene.add(ball14);
+    scene.add(ball15);
+    scene.add(ball16);
 
 
-    var ballArray = [ ball1, ball2];
-
-   
-
+    var ballArray = [ ball1, ball2, ball3, ball4, ball5, ball6, ball7, ball8, ball9, ball10, ball11, ball12, ball13, ball14, ball15, ball16 ];
     // Light
-    var ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.0);
+    var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
+    var lightBulb1 = new THREE.PointLight(0xFFFFFF, 0.5, 50);
+    var lightBulb2 = new THREE.PointLight(0xFFFFFF, 0.5, 50);
+
     scene.add(ambientLight);
+    scene.add(lightBulb1);
+    scene.add(lightBulb2);
 
-    camera.position.z = 16;
+    lightBulb1.position.set( 0, 5, 8 );
+    lightBulb2.position.set( 0, -5, 8 );
 
-    ball1.speed.x = 0.05;
-    ball1.speed.y = 0.05;
+    camera.position.z = 50;
+
+    ball1.speed.x = 0;
+    ball1.speed.y = 0.2;
 
     let clock = new THREE.Clock(); 
 
@@ -56,12 +88,8 @@
                     ballArray[i].checkCollision(ballArray[ii]);
                 }
             }
-        }
-
-        for (var i = 0; i < ballArray.length; i++) {
             ballArray[i].move(deltaTime);
         }
-
         renderer.render(scene, camera);
     }
 

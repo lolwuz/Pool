@@ -11,9 +11,7 @@ class Ball extends THREE.Mesh{
             x: 0,
             y: 0
         }
-
         this.position.set(position.x, position.y, 0);
-        this.isColliding = false;
     }
 
     checkCollision(Ball){
@@ -22,9 +20,8 @@ class Ball extends THREE.Mesh{
         let dy = Ball.position.y - this.position.y;
         let distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
         
-        if(distance <= 1){ // Collision!
+        if(distance < 1){ // Collision!
             console.log("Collsion");
-            this.isColliding = true;
             let movementAngleA = Math.atan2(this.speed.y, this.speed.x);
             let movementAngleB = Math.atan2(Ball.speed.y, Ball.speed.x);
             let velocityA = Math.sqrt(Math.pow(this.speed.y, 2) + Math.pow(this.speed.x, 2));
@@ -32,11 +29,18 @@ class Ball extends THREE.Mesh{
 
             let collisionAngle = Math.atan2(dy, dx);
 
-            this.speed.x = ((velocityA * Math.cos(movementAngleA - collisionAngle) + 2 * velocityB * Math.cos(movementAngleB - collisionAngle)) / 2)
+            this.speed.x = (2 * velocityB * Math.cos(movementAngleB - collisionAngle) / 2)
                 * Math.cos(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2 );
 
-            this.speed.y = ((velocityA * Math.cos(movementAngleA - collisionAngle) + 2 * velocityB * Math.cos(movementAngleB - collisionAngle)) / 2)
-                * Math.sin(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2 );      
+            this.speed.y = (2 * velocityB * Math.cos(movementAngleB - collisionAngle) / 2)
+                * Math.sin(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2 );    
+                
+            Ball.speed.x = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2)
+                * Math.cos(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2 );
+
+            Ball.speed.y = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2)
+                * Math.sin(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2 );    
+
         }
     }
 
