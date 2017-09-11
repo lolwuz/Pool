@@ -39,7 +39,7 @@ class Ball extends THREE.Mesh{
                 * Math.cos(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2 );
 
             Ball.speed.y = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2)
-                * Math.sin(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2 );    
+                * Math.sin(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2 );
 
         }
     }
