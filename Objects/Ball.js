@@ -64,32 +64,6 @@ class Ball extends THREE.Mesh{
         // Set new position according to x/y speed.
         this.position.set( this.position.x + this.speed.x * deltaTime, this.position.y + this.speed.y * deltaTime, 0 );
 
-        // Handle rotation
 
-        let axis = new THREE.Vector3(),
-            quaternion = new THREE.Quaternion();
-
-        let angle = Math.acos();
-
-        if (angle)
-        {
-            axis.crossVectors(rotateStart, rotateEnd).normalize();
-            angle *= rotationSpeed;
-            quaternion.setFromAxisAngle(axis, angle);
-        }
-        return quaternion;
-
-
-        let rotateEndPoint = projectOnTrackball(deltaX, deltaY);
-
-        let rotateQuaternion = rotateMatrix(rotateStartPoint, rotateEndPoint);
-        let curQuaternion = this.quaternion;
-
-        curQuaternion.multiplyQuaternions(rotateQuaternion, curQuaternion);
-        curQuaternion.normalize();
-
-        this.setRotationFromQuaternion(curQuaternion);
-
-        rotateEndPoint = rotateStartPoint;
     };
 }
