@@ -13,11 +13,12 @@
 <script src="js/controls/OrbitControls.js"></script>
 <script src="Objects/Ball.js"></script>
 <script src="Objects/Table.js"></script>
+<script src="Objects/Cue.js"></script>
 <script src="Objects/Player.js"></script>
 <script src="Objects/Game.js"></script>
 <script src="js/loaders/ColladaLoader2.js"></script>
 <script>
-    var game = new Game();
+    let game = new Game();
 
     animate();
 
@@ -34,6 +35,9 @@
             game.ballArray[i].checkCollisionTable(game.table);
             game.ballArray[i].move(deltaTime);
         }
+
+
+
         game.controls.update();
         game.renderer.render(game.scene, game.camera);
     }

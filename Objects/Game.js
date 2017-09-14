@@ -23,6 +23,8 @@ class Game{
         this.controls.maxPolarAngle = 1.3;
 
         this.table = new Table();
+        this.cue = new Cue();
+
         this.ballArray = [
             new Ball(0, {x: 0, y: -5}),
             new Ball(9, {x: 0, y: 5}),
@@ -47,14 +49,16 @@ class Game{
             player2
         ];
 
+        // Add objects to the scene.
         for(let i = 0; i < this.ballArray.length; i++){
             this.scene.add(this.ballArray[i]);
         }
+        this.scene.add(this.cue);
 
         // Light
         let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4);
-        let lightBulb1 = new THREE.PointLight(0xFFFFFF, 0.5, 50);
-        let lightBulb2 = new THREE.PointLight(0xFFFFFF, 0.5, 50);
+        let lightBulb1 = new THREE.PointLight(0xffecc5, 0.5, 50);
+        let lightBulb2 = new THREE.PointLight(0xffecc5, 0.5, 50);
 
         this.scene.add(ambientLight);
         this.scene.add(lightBulb1);
