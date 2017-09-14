@@ -3,15 +3,15 @@ class Table extends THREE.Object3D {
         super();
 
         // table surface
-        this.add(this.surface);
+        //this.add(this.surface);
 
         // table legs
-        let leg1 = new TableLeg();
-            leg1.translateX(78);
-            leg1.translateZ(35);
+        //let leg1 = new TableLeg();
+            //leg1.translateX(78);
+            //leg1.translateZ(35);
 
         // more
-        this.add(leg1);
+        //this.add(leg1);
 
         // Dimensions
         this.dimensions = {
@@ -29,9 +29,10 @@ class Table extends THREE.Object3D {
         let geometry = new THREE.BoxGeometry(18, 36, -0.7);
         let material = new THREE.MeshBasicMaterial({
             color: 0xffffff,
-            map: texture,
-            bumpMap: texture,
-            shininess: 70});
+            map: texture
+            //bumpMap: texture,
+            //shininess: 70}
+        });
 
         return new THREE.Mesh(geometry, material);
     }

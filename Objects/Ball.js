@@ -5,8 +5,8 @@
 class Ball extends THREE.Mesh{
     constructor(ballnumber, position) {
         const sphereGeometry = new THREE.SphereGeometry(0.5, 128, 128);
-        const texture = new THREE.TextureLoader().load( "./textures/ball/" + ballnumber + ".gif" );
-        const material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, map: texture, shininess: 70 });
+        const texture = new THREE.TextureLoader().load( "./textures/ball/" + ballnumber + ".png" );
+        const material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, map: texture, shininess: 10, specular: 0xFFFFFF });
         super(sphereGeometry, material);
         this.speed = {
             x: 0,

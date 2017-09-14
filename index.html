@@ -3,10 +3,7 @@
 <head>
     <meta charset=utf-8>
     <title>Super pool</title>
-    <style>
-        body { margin: 0; }
-        canvas { width: 100%; height: 100% }
-    </style>
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 <script src="js/three.js"></script>
@@ -18,9 +15,16 @@
 <script src="Objects/Game.js"></script>
 <script src="js/loaders/ColladaLoader2.js"></script>
 <script>
-    let game = new Game();
-
+    init();
     animate();
+
+    var game;
+
+    function init(){
+        game = new Game();
+        window.addEventListener( 'resize', onWindowResize, false );
+        document.addEventListener("keydown", onDocumentKeyDown, false);
+    }
 
     function animate(){
         requestAnimationFrame( animate );
@@ -36,10 +40,31 @@
             game.ballArray[i].move(deltaTime);
         }
 
-
-
-        game.controls.update();
+        //game.controls.update();
         game.renderer.render(game.scene, game.camera);
+    }
+
+    function onDocumentKeyDown(event) {
+        let keyCode = event.which;
+        if (keyCode === 87) {
+            game.cue.rotateDegrees(0.1); // W
+        } else if (keyCode === 83) {
+            game.cue.rotateDegrees(0.1); // S
+        } else if (keyCode === 65) {
+            game.cue.rotateDegrees(-0.1); // A
+        } else if (keyCode === 68) {
+            game.cue.rotateDegrees(0.1); // D
+        } else if (keyCode === 32) {
+            game.cue.rotateDegrees(0.1);
+        }
+
+        console.log(game.cue.rotation);
+    }
+
+    function onWindowResize() {
+        game.camera.aspect = window.innerWidth / window.innerHeight;
+        game.camera.updateProjectionMatrix();
+        game.renderer.setSize( window.innerWidth, window.innerHeight );
     }
 
 </script>

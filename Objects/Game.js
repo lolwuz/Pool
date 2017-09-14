@@ -3,15 +3,43 @@ class Game{
     constructor(player1, player2){
         // Create a scene with objects.
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera( 50, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
         this.camera.up.set( 0, 0, 1 );
         this.camera.position.set(0, 0, 40);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
         this.renderer = new THREE.WebGLRenderer({antialias:true});
-
         this.renderer.setClearColor(0xCCCCFF, 1);
+
+        // Load cubeMap
+        let path = "./3D/texture/Sides/";
+        let format = ".png";
+        let urls = [
+            path + 'nx' + format, path + 'px' + format,
+            path + 'pz' + format, path + 'nz' + format,
+            path + 'py' + format, path + 'ny' + format
+        ];
+        let cubeMaterial = new THREE.CubeTextureLoader().load(urls);
+        let shader = THREE.ShaderLib.cube;
+        shader.uniforms.tCube.value = cubeMaterial;
+
+        let material = new THREE.ShaderMaterial({
+                fragmentShader: shader.fragmentShader,
+                vertexShader: shader.vertexShader,
+                uniforms: shader.uniforms,
+                depthWrite: false,
+                side: THREE.DoubleSide
+        });
+
+        this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
+        this.cubeMesh.scale.y = -1;
+        this.scene.add(this.cubeMesh);
+        console.log(this.scene);
+
         this.renderer.setSize( window.innerWidth, window.innerHeight );
+
         document.body.appendChild( this.renderer.domElement );
+
 
         this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
         this.controls.enableDamping = true;
@@ -20,11 +48,9 @@ class Game{
         this.controls.minDistance = 5;
         this.controls.enablePan = false;
         this.controls.enableRotate = true;
-        this.controls.maxPolarAngle = 1.3;
+        //this.controls.maxPolarAngle = 1.3;
 
         this.table = new Table();
-        this.cue = new Cue();
-
         this.ballArray = [
             new Ball(0, {x: 0, y: -5}),
             new Ball(9, {x: 0, y: 5}),
@@ -43,6 +69,7 @@ class Game{
             new Ball(2, {x: 1.01, y: 9}),
             new Ball(11, {x: 2.02, y: 9})
         ];
+        this.cue = new Cue(this.ballArray[0].position);
 
         this.players = [
             player1,
@@ -56,19 +83,16 @@ class Game{
         this.scene.add(this.cue);
 
         // Light
-        let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4);
-        let lightBulb1 = new THREE.PointLight(0xffecc5, 0.5, 50);
-        let lightBulb2 = new THREE.PointLight(0xffecc5, 0.5, 50);
+        let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.6);
+        let lightBulb1 = new THREE.PointLight(0xFFFFFF, 0.3, 50);
+        let lightBulb2 = new THREE.PointLight(0xFFFFFF, 0.3, 50);
 
         this.scene.add(ambientLight);
         this.scene.add(lightBulb1);
         this.scene.add(lightBulb2);
 
-        lightBulb1.position.set( 0, 5, 8 );
-        lightBulb2.position.set( 0, -5, 8 );
-
-        this.ballArray[0].speed.x = 0;
-        this.ballArray[0].speed.y = 0.4;
+        lightBulb1.position.set( 0, 9, 8 );
+        lightBulb2.position.set( 0, -9, 8 );
 
         this.clock = new THREE.Clock();
     };
