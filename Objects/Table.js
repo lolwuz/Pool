@@ -22,7 +22,7 @@ class Table extends THREE.Object3D {
         };
     }
 
-    get surface()
+    get surface() 
     {
         let texture = new THREE.TextureLoader().load('./textures/table/cloth.jpg');
 
