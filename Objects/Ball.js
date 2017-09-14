@@ -23,7 +23,7 @@ class Ball extends THREE.Mesh{
         this.position = position;
     };
 
-    checkCollision(Ball){
+    checkCollisionBall(Ball){
         // Calculating distance between Balls.
         let dx = Ball.position.x - this.position.x;
         let dy = Ball.position.y - this.position.y;
@@ -48,7 +48,6 @@ class Ball extends THREE.Mesh{
                 * Math.sin(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2 );
 
 
-            console.log((Math.round(Math.cos(collisionAngle) * 1000) / 1000));
             // Reset position outside of collision bounds.
             this.position.x = Ball.position.x - (Math.round(Math.cos(collisionAngle) * 1000) / 1000);
             this.position.y = Ball.position.y - (Math.round(Math.sin(collisionAngle) * 1000) / 1000);
@@ -60,10 +59,37 @@ class Ball extends THREE.Mesh{
         }
     };
 
+    checkCollisionTable(Table){
+        // Reverse speed when boundary off the table have been reached.
+        if(this.position.y + 0.5 > Table.dimensions.topLeft.y || this.position.y + 0.5 < Table.dimensions.bottomLeft.y){
+            this.speed.y *= -1; // Vertical
+        }
+        if(this.position.x + 0.5 > Table.dimensions.topRight.x || this.position.x + 0.5 < Table.dimensions.topLeft.x){
+            this.speed.x *= -1; // Horizontal
+        }
+    };
+
     move(deltaTime){
+        // Setting rolling resistance
+        this.speed.x = this.speed.x * (1 - 0.006 * deltaTime);
+        this.speed.y = this.speed.y * (1 - 0.006 * deltaTime);
+
         // Set new position according to x/y speed.
+        let stepX = this.speed.x * deltaTime;
+        let stepY = this.speed.y * deltaTime;
         this.position.set( this.position.x + this.speed.x * deltaTime, this.position.y + this.speed.y * deltaTime, 0 );
 
+        // Update ball rotation
+        let tempMat = new THREE.Matrix4();
+        tempMat.makeRotationAxis(new THREE.Vector3(0,1,0), stepX/ 0.5);
+        tempMat.multiply(this.matrix);
+        this.matrix = tempMat;
+        tempMat = new THREE.Matrix4();
+        tempMat.makeRotationAxis(new THREE.Vector3(1,0,0), -stepY/0.5);
+        tempMat.multiply(this.matrix);
+        this.matrix = tempMat;
+        this.rotation.setFromRotationMatrix(this.matrix);
 
+        console.log(this.position.x);
     };
 }
