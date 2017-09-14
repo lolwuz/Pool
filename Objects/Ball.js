@@ -89,7 +89,5 @@ class Ball extends THREE.Mesh{
         tempMat.multiply(this.matrix);
         this.matrix = tempMat;
         this.rotation.setFromRotationMatrix(this.matrix);
-
-        console.log(this.position.x);
     };
 }
