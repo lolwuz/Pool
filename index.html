@@ -10,100 +10,33 @@
 </head>
 <body>
 <script src="js/three.js"></script>
+<script src="js/controls/OrbitControls.js"></script>
 <script src="Objects/Ball.js"></script>
 <script src="Objects/Table.js"></script>
+<script src="Objects/Player.js"></script>
+<script src="Objects/Game.js"></script>
 <script src="js/loaders/ColladaLoader2.js"></script>
 <script>
+    var game = new Game();
 
-    init();
     animate();
-
-    var scene, camera, clock, renderer;
-    var ballArray, table;
-
-    function init(){
-        // Our Javascript will go here.
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera( 50, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-        renderer = new THREE.WebGLRenderer({antialias:true});
-        renderer.setClearColor(0xCCCCFF, 1);
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        document.body.appendChild( renderer.domElement );
-
-
-        table = new Table();
-
-        let ball1 = new Ball(0, {x: 0, y: -5}); // White ball
-        let ball2 = new Ball(9, {x: 0, y: 5});
-        let ball3 = new Ball(12, {x: -0.51, y: 6});
-        let ball4 = new Ball(7, {x: 0.51, y: 6});
-        let ball5 = new Ball(1, {x: -1.01, y: 7});
-        let ball6 = new Ball(8, {x: 0, y: 7});
-        let ball7 = new Ball(15, {x: 1.01, y: 7});
-        let ball8 = new Ball(14, {x: -1.53, y: 8});
-        let ball9 = new Ball(3, {x: -0.51, y: 8});
-        let ball10 = new Ball(10, {x: 0.51, y: 8});
-        let ball11 = new Ball(6, {x: 1.53, y: 8});
-        let ball12 = new Ball(5, {x: -2.02, y: 9});
-        let ball13 = new Ball(4, {x: -1.01, y: 9});
-        let ball14 = new Ball(13, {x: 0, y: 9});
-        let ball15 = new Ball(2, {x: 1.01, y: 9});
-        let ball16 = new Ball(11, {x: 2.02, y: 9});
-
-        ballArray = [ ball1, ball2, ball3, ball4, ball5, ball6, ball7, ball8, ball9, ball10, ball11, ball12, ball13, ball14, ball15, ball16 ];
-
-        for(let i = 0; i < ballArray.length; i++){
-            scene.add(ballArray[i]);
-        }
-
-        /*
-        let loader = new THREE.ColladaLoader();
-        loader.options.convertUpAxis = true;
-        loader.load( '3D/Pooltable.DAE', function ( collada ) {
-            let poolTable = collada.scene;
-            scene.add( poolTable );
-        } );
-
-        */
-        // Light
-        let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4);
-        let lightBulb1 = new THREE.PointLight(0xFFFFFF, 0.5, 50);
-        let lightBulb2 = new THREE.PointLight(0xFFFFFF, 0.5, 50);
-
-        scene.add(ambientLight);
-        scene.add(lightBulb1);
-        scene.add(lightBulb2);
-
-        lightBulb1.position.set( 0, 5, 8 );
-        lightBulb2.position.set( 0, -5, 8 );
-
-        camera.position.z = 28;
-        camera.position.y = -25;
-        camera.rotation.x = 0.7;
-
-        ball1.speed.x = 0;
-        ball1.speed.y = 0.4;
-
-        clock = new THREE.Clock();
-    }
 
     function animate(){
         requestAnimationFrame( animate );
-        let deltaTime = 60 * clock.getDelta();
+        let deltaTime = 60 * game.clock.getDelta();
 
-        for (let i = 0; i < ballArray.length; i++) {
-            for(let ii=0; ii < ballArray.length; ii++){
-                if(ballArray[i] !== ballArray[ii]){
-                    ballArray[i].checkCollisionBall(ballArray[ii]);
+        for (let i = 0; i < game.ballArray.length; i++) {
+            for(let ii=0; ii < game.ballArray.length; ii++){
+                if(game.ballArray[i] !== game.ballArray[ii]){
+                    game.ballArray[i].checkCollisionBall(game.ballArray[ii]);
                 }
             }
-            ballArray[i].checkCollisionTable(table);
-            ballArray[i].move(deltaTime);
+            game.ballArray[i].checkCollisionTable(game.table);
+            game.ballArray[i].move(deltaTime);
         }
-        renderer.render(scene, camera);
+        game.controls.update();
+        game.renderer.render(game.scene, game.camera);
     }
-
 
 </script>
 </body>
