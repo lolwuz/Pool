@@ -69,7 +69,7 @@ class Game{
             new Ball(2, {x: 1.01, y: 9}),
             new Ball(11, {x: 2.02, y: 9})
         ];
-        this.cue = new Cue(this.ballArray[0].position);
+        this.cue = new Cue(this.ballArray[0]);
 
         this.players = [
             player1,

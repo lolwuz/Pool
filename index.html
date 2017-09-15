@@ -19,19 +19,22 @@
     animate();
 
     var game;
+    var mouse = new THREE.Vector2();
+    var raycaster = new THREE.Raycaster();
 
     function init(){
         game = new Game();
         window.addEventListener( 'resize', onWindowResize, false );
         document.addEventListener("keydown", onDocumentKeyDown, false);
+        document.addEventListener( 'click', onDocumentMouseClick, false );
     }
 
     function animate(){
         requestAnimationFrame( animate );
         let deltaTime = 60 * game.clock.getDelta();
 
-        for (let i = 0; i < game.ballArray.length; i++) {
-            for(let ii=0; ii < game.ballArray.length; ii++){
+        for (var i = 0; i < game.ballArray.length; i++) {
+            for(var ii=0; ii < game.ballArray.length; ii++){
                 if(game.ballArray[i] !== game.ballArray[ii]){
                     game.ballArray[i].checkCollisionBall(game.ballArray[ii]);
                 }
@@ -40,12 +43,12 @@
             game.ballArray[i].move(deltaTime);
         }
 
-        //game.controls.update();
+        //Game.controls.update();
         game.renderer.render(game.scene, game.camera);
     }
 
     function onDocumentKeyDown(event) {
-        let keyCode = event.which;
+        var keyCode = event.which;
         if (keyCode === 87) {
             game.cue.rotateDegrees(0.1); // W
         } else if (keyCode === 83) {
@@ -55,10 +58,20 @@
         } else if (keyCode === 68) {
             game.cue.rotateDegrees(0.1); // D
         } else if (keyCode === 32) {
-            game.cue.rotateDegrees(0.1);
+            game.cue.shoot(0.4); // Space
         }
+    }
 
-        console.log(game.cue.rotation);
+    function onDocumentMouseClick(event){
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        raycaster.setFromCamera( mouse.clone(), game.camera );
+
+        var intersect = raycaster.intersectObjects(game.ballArray);
+
+        for ( var i = 0; i < intersect.length; i++ ) {
+            game.cue.setBall(intersect[i].object);
+        }
     }
 
     function onWindowResize() {
