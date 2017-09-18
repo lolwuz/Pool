@@ -6,8 +6,6 @@ class Game{
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
         this.camera.up.set( 0, 0, 1 );
-        this.camera.position.set(0, 0, 40);
-        this.camera.lookAt(new THREE.Vector3(0,0,0));
         this.renderer = new THREE.WebGLRenderer({antialias:true});
         this.renderer.setClearColor(0xCCCCFF, 1);
 
@@ -34,8 +32,6 @@ class Game{
         this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
         this.cubeMesh.scale.y = -1;
         this.scene.add(this.cubeMesh);
-        console.log(this.scene);
-
         this.renderer.setSize( window.innerWidth, window.innerHeight );
 
         document.body.appendChild( this.renderer.domElement );
@@ -70,6 +66,9 @@ class Game{
             new Ball(11, {x: 2.02, y: 9})
         ];
         this.cue = new Cue(this.ballArray[0]);
+
+        this.camera.lookAt(this.ballArray[0].position);
+        this.camera.position.set(this.ballArray[0].position.x, this.ballArray[0].position.y, 40);
 
         this.players = [
             player1,

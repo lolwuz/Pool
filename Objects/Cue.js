@@ -16,14 +16,17 @@ class Cue extends THREE.Mesh{
 
     setBall(ball){
         this.selectedBall = ball;
-        this.position.set(ball.position.x, ball.position.y, 0);
+        this.position.set(ball.position.x, ball.position.y, ball.position.z);
     };
 
     shoot(force){
-
         let angle = this.rotation.z - (-90 * Math.PI / 180);
         let speedX = Math.cos(angle) * force;
         let speedY = Math.sin(angle) * force;
         this.selectedBall.setSpeed({x: speedX, y: speedY});
+    };
+
+    update(){
+        this.position.set(this.selectedBall.position.x, this.selectedBall.position.y, this.selectedBall.position.z);
     };
 }

@@ -71,8 +71,8 @@ class Ball extends THREE.Mesh{
 
     move(deltaTime){
         // Setting rolling resistance
-        this.speed.x = this.speed.x * (1 - 0.006 * deltaTime);
-        this.speed.y = this.speed.y * (1 - 0.006 * deltaTime);
+        this.speed.x = this.speed.x * (1 - 0.02 * deltaTime);
+        this.speed.y = this.speed.y * (1 - 0.02 * deltaTime);
 
         // Set new position according to x/y speed.
         let stepX = this.speed.x * deltaTime;

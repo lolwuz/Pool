@@ -33,8 +33,8 @@
         requestAnimationFrame( animate );
         let deltaTime = 60 * game.clock.getDelta();
 
-        for (var i = 0; i < game.ballArray.length; i++) {
-            for(var ii=0; ii < game.ballArray.length; ii++){
+        for (let i = 0; i < game.ballArray.length; i++) {
+            for(let ii=0; ii < game.ballArray.length; ii++){
                 if(game.ballArray[i] !== game.ballArray[ii]){
                     game.ballArray[i].checkCollisionBall(game.ballArray[ii]);
                 }
@@ -42,7 +42,7 @@
             game.ballArray[i].checkCollisionTable(game.table);
             game.ballArray[i].move(deltaTime);
         }
-
+        game.cue.update();
         //Game.controls.update();
         game.renderer.render(game.scene, game.camera);
     }
@@ -58,7 +58,7 @@
         } else if (keyCode === 68) {
             game.cue.rotateDegrees(0.1); // D
         } else if (keyCode === 32) {
-            game.cue.shoot(0.4); // Space
+            game.cue.shoot(0.8); // Space
         }
     }
 
