@@ -31,20 +31,7 @@
 
     function animate(){
         requestAnimationFrame( animate );
-        let deltaTime = 60 * game.clock.getDelta();
-
-        for (let i = 0; i < game.ballArray.length; i++) {
-            for(let ii=0; ii < game.ballArray.length; ii++){
-                if(game.ballArray[i] !== game.ballArray[ii]){
-                    game.ballArray[i].checkCollisionBall(game.ballArray[ii]);
-                }
-            }
-            game.ballArray[i].checkCollisionTable(game.table);
-            game.ballArray[i].move(deltaTime);
-        }
-        game.cue.update();
-        //Game.controls.update();
-        game.renderer.render(game.scene, game.camera);
+        game.update();
     }
 
     function onDocumentKeyDown(event) {
@@ -69,8 +56,9 @@
 
         var intersect = raycaster.intersectObjects(game.ballArray);
 
-        for ( var i = 0; i < intersect.length; i++ ) {
+        for ( let i = 0; i < intersect.length; i++ ) {
             game.cue.setBall(intersect[i].object);
+            game.camera.lookAt(game.cue.selectedBall.position);
         }
     }
 

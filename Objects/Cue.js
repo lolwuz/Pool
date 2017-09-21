@@ -26,7 +26,17 @@ class Cue extends THREE.Mesh{
         this.selectedBall.setSpeed({x: speedX, y: speedY});
     };
 
-    update(){
+    update(camera){
+        let dx = this.selectedBall.position.x - camera.position.x;
+        let dy = this.selectedBall.position.y - camera.position.y;
+
+        let cameraAngle = Math.atan2(dy, dx);
+        this.rotation.z = cameraAngle + (-90 * Math.PI / 180);
+
+        // Set camera to rotate and look at selected ball
+        camera.lookAt(this.selectedBall.position);
+        // camera.position.set(this.selectedBall.position.x, this.selectedBall.position.y, 40);
+
         this.position.set(this.selectedBall.position.x, this.selectedBall.position.y, this.selectedBall.position.z);
     };
 }

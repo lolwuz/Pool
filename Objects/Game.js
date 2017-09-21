@@ -9,6 +9,7 @@ class Game{
         this.renderer = new THREE.WebGLRenderer({antialias:true});
         this.renderer.setClearColor(0xCCCCFF, 1);
 
+        /* Cube mesh
         // Load cubeMap
         let path = "./3D/texture/Sides/";
         let format = ".png";
@@ -32,6 +33,8 @@ class Game{
         this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
         this.cubeMesh.scale.y = -1;
         this.scene.add(this.cubeMesh);
+        */
+
         this.renderer.setSize( window.innerWidth, window.innerHeight );
 
         document.body.appendChild( this.renderer.domElement );
@@ -44,7 +47,8 @@ class Game{
         this.controls.minDistance = 5;
         this.controls.enablePan = false;
         this.controls.enableRotate = true;
-        //this.controls.maxPolarAngle = 1.3;
+        this.controls.minPolarAngle = Math.PI / 6;
+        this.controls.maxPolarAngle = Math.PI / 2;
 
         this.table = new Table();
         this.ballArray = [
@@ -68,7 +72,7 @@ class Game{
         this.cue = new Cue(this.ballArray[0]);
 
         this.camera.lookAt(this.ballArray[0].position);
-        this.camera.position.set(this.ballArray[0].position.x, this.ballArray[0].position.y, 40);
+        this.camera.position.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.x, 40);
 
         this.players = [
             player1,
@@ -96,6 +100,22 @@ class Game{
         this.clock = new THREE.Clock();
     };
 
+    update(){
+        let deltaTime = 60 * this.clock.getDelta();
 
+        for (let i = 0; i < this.ballArray.length; i++) {
+            for(let ii=0; ii < this.ballArray.length; ii++){
+                if(this.ballArray[i] !== this.ballArray[ii]){
+                    this.ballArray[i].checkCollisionBall(this.ballArray[ii]);
+                }
+            }
+            this.ballArray[i].checkCollisionTable(this.table);
+            this.ballArray[i].move(deltaTime);
+        }
+        this.cue.update(this.camera);
+
+        // Update camera
+        this.renderer.render(this.scene, this.camera);
+    };
 }
 
