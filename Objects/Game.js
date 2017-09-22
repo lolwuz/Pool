@@ -34,6 +34,33 @@ class Game{
         this.cubeMesh.scale.y = -1;
         this.scene.add(this.cubeMesh);
         */
+        //
+
+        let onProgress = function( xhr ) {
+
+            if ( xhr.lengthComputable ) {
+
+                let percentComplete = xhr.loaded / xhr.total * 100;
+                console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+
+            }
+
+        };
+
+        let onError = function( xhr ) {
+            console.error( xhr );
+
+        };
+        // model
+        let manager = new THREE.LoadingManager();
+        console.log(manager);
+        let loader = new THREE.FBXLoader( manager );
+        loader.load( './3D/table/table.fbx', function( geometry ) {
+            let material = new THREE.MeshNormalMaterial();
+            let mesh = new THREE.Mesh(geometry, material);
+            console.log(mesh);
+            this.scene.add( mesh );
+        }, onProgress, onError);
 
         this.renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -113,6 +140,7 @@ class Game{
             this.ballArray[i].move(deltaTime);
         }
         this.cue.update(this.camera);
+        // this.controls.update();
 
         // Update camera
         this.renderer.render(this.scene, this.camera);

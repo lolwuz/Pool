@@ -52,7 +52,6 @@ class Ball extends THREE.Mesh{
 
             this.setSpeed({x: aSpeedX, y: aSpeedY});
             Ball.setSpeed({x: bSpeedX, y: bSpeedY});
-
         }
     };
 
