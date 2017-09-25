@@ -66,7 +66,7 @@ class Game{
 
         document.body.appendChild( this.renderer.domElement );
 
-
+        // Add orbit controlls to the scene.
         this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.25;
@@ -76,8 +76,12 @@ class Game{
         this.controls.enableRotate = true;
         this.controls.minPolarAngle = Math.PI / 6;
         this.controls.maxPolarAngle = Math.PI / 2;
-
+        
+        // Add table and set postion
         this.table = new Table();
+        this.scene.add(this.table);
+        this.table.position.set(0, 0, -1);
+        
         this.ballArray = [
             new Ball(0, {x: 0, y: -5}),
             new Ball(9, {x: 0, y: 5}),
@@ -139,8 +143,12 @@ class Game{
             this.ballArray[i].checkCollisionTable(this.table);
             this.ballArray[i].move(deltaTime);
         }
+        // Update Cue movement
         this.cue.update(this.camera);
-        // this.controls.update();
+        
+        // Set camera to rotate and look at selected ball
+        this.camera.lookAt(this.cue.selectedBall.position);
+        this.controls.target = this.cue.selectedBall.position; 
 
         // Update camera
         this.renderer.render(this.scene, this.camera);

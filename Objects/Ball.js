@@ -3,10 +3,10 @@
  */
 
 class Ball extends THREE.Mesh{
-    constructor(ballnumber, position) {
+    constructor(ballNumber, position) {
         const sphereGeometry = new THREE.SphereGeometry(0.5, 128, 128);
-        const texture = new THREE.TextureLoader().load( "./textures/ball/" + ballnumber + ".png" );
-        const material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, map: texture, shininess: 10, specular: 0xFFFFFF });
+        const texture = new THREE.TextureLoader().load( "./textures/ball/" + ballNumber + ".png" );
+        const material = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, map: texture, shininess: 20, specular: 0xFFFFFF });
         super(sphereGeometry, material);
         this.speed = new THREE.Vector2();
         this.position.set(position.x, position.y, 0);
@@ -66,10 +66,19 @@ class Ball extends THREE.Mesh{
     };
 
     move(deltaTime){
-        // Setting rolling resistance
+        // Setting rolling resistance.
         this.speed.x = this.speed.x * (1 - 0.02 * deltaTime);
         this.speed.y = this.speed.y * (1 - 0.02 * deltaTime);
-
+        
+        /*
+        // If speed is to low the ball stops rolling. 
+        let speed = Math.atan2(this.speed.y, this.speed.x);
+        console.log();
+        if(Math.atan2(this.speed.y, this.speed.x) < 0.02){
+            this.speed = new THREE.Vector2();
+        }   
+        */
+    
         // Set new position according to x/y speed.
         let stepX = this.speed.x * deltaTime;
         let stepY = this.speed.y * deltaTime;

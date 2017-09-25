@@ -35,7 +35,7 @@ class Cue extends THREE.Mesh{
 
         // Set camera to rotate and look at selected ball
         camera.lookAt(this.selectedBall.position);
-        //camera.position.set(this.selectedBall.position.x, this.selectedBall.position.y, 40);
+        // camera.position.set(this.selectedBall.position.x, this.selectedBall.position.y, 40);
 
         this.position.set(this.selectedBall.position.x, this.selectedBall.position.y, this.selectedBall.position.z);
     };
