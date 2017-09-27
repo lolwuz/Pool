@@ -58,11 +58,11 @@ class Ball extends THREE.Mesh{
 
     checkCollisionTable(Table){
         // Reverse speed when boundary off the table have been reached.
-        if(this.position.y + 0.5 > Table.dimensions.topLeft.y || this.position.y + 0.5 < Table.dimensions.bottomLeft.y){
-            this.speed.y *= -1; // Vertical
+        if( this.position.x + 0.5 > Table.dimensions.topRight.x || this.position.x - 0.5 < Table.dimensions.topLeft.x){
+            this.speed.x *= -1;
         }
-        if(this.position.x + 0.5 > Table.dimensions.topRight.x || this.position.x + 0.5 < Table.dimensions.topLeft.x){
-            this.speed.x *= -1; // Horizontal
+        if( this.position.y + 0.5 > Table.dimensions.topRight.y || this.position.y - 0.5 < Table.dimensions.bottomRight.y){
+            this.speed.y *= -1;
         }
     };
 

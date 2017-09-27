@@ -33,35 +33,69 @@ class Table extends THREE.Object3D {
         let woodTexture = new THREE.TextureLoader().load( "./textures/table/floorwood.jpg");
         let woodMaterial = new THREE.MeshPhongMaterial( { map: woodTexture} );
         
-        let woodSideGeometry = new THREE.BoxGeometry( 1, 22, 3 );
-        let woodTopGeometry = new THREE.BoxGeometry( 22, 1, 3 );
+        let woodSideGeometry = new THREE.BoxGeometry( 1, 21, 3 );
+        let woodTopGeometry = new THREE.BoxGeometry( 21, 1, 3 );
         
-        let woodSideLeft = new THREE.Mesh(  woodSideGeometry, woodMaterial );
-        let woodSideRight = new THREE.Mesh(  woodSideGeometry, woodMaterial );
-        
-        
+        let woodSideLeftTop = new THREE.Mesh(  woodSideGeometry, woodMaterial );
+        let woodSideRightTop = new THREE.Mesh(  woodSideGeometry, woodMaterial );
+        let woodSideLeftBottom = new THREE.Mesh(  woodSideGeometry, woodMaterial );
+        let woodSideRightBottom = new THREE.Mesh(  woodSideGeometry, woodMaterial );
+         
         let woodTop = new THREE.Mesh( woodTopGeometry, woodMaterial );
         let woodBottom = new THREE.Mesh( woodTopGeometry, woodMaterial );
         
+        woodSideLeftTop.position.set(-12.5, 12, -0.3);
+        woodSideRightTop.position.set(12.5, 12, -0.3);
+        woodSideLeftBottom.position.set(-12.5, -12, -0.3);
+        woodSideRightBottom.position.set(12.5, -12, -0.3);
+        woodTop.position.set(0, 24.5, -0.3);
+        woodBottom.position.set(0, -24.5, -0.3);
+    
+        // Holes
+        let cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1.1, 20 );
+        let cylinderMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
         
-        woodSideLeft.position.set(-12.5, 0, -0.5);
-        woodSideRight.position.set(12.5, 0, -0.5);
+        let topLeftCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+        let topRightCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+        let middleLeftCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+        let middleRightCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+        let bottomLeftCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+        let bottomRightCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+    
+        topLeftCylinder.position.set(this.dimensions.topLeft.x, this.dimensions.topLeft.y, 0);
+        topRightCylinder.position.set(this.dimensions.topRight.x, this.dimensions.topRight.y, 0);
+        middleLeftCylinder.position.set(this.dimensions.topLeft.x, (this.dimensions.topLeft.y + this.dimensions.bottomLeft.y) / 2, 0);
+        middleRightCylinder.position.set(this.dimensions.topRight.x, (this.dimensions.topRight.y + this.dimensions.bottomRight.y) / 2, 0);
+        bottomLeftCylinder.position.set(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 0);
+        bottomRightCylinder.position.set(this.dimensions.bottomRight.x, this.dimensions.bottomRight.y, 0);
+         
+        topLeftCylinder.rotation.set(1.5708,0,0);
+        topRightCylinder.rotation.set(1.5708,0,0);
+        middleLeftCylinder.rotation.set(1.5708,0,0);
+        middleRightCylinder.rotation.set(1.5708,0,0);
+        bottomLeftCylinder.rotation.set(1.5708,0,0);
+        bottomRightCylinder.rotation.set(1.5708,0,0);
         
-        woodTop.position.set(0, 24.5, -0.5);
-        woodBottom.position.set(0, -24.5, -0.5);
-        
-        
-        woodSideLeft.receiveShadow = true;
-        woodSideRight.receiveShadow = true;
+        // Shadows
+        woodSideLeftTop.receiveShadow = true;
+        woodSideRightTop.receiveShadow = true;
         woodTop.receiveShadow = true;
         woodBottom.receiveShadow = true;
         field.receiveShadow = true;
         
         this.add( field );
-        this.add( woodSideLeft );
-        this.add( woodSideRight );
+        this.add( woodSideLeftTop );
+        this.add( woodSideRightTop );
+        this.add( woodSideLeftBottom );
+        this.add( woodSideRightBottom );
         this.add( woodTop );
         this.add( woodBottom );
+        this.add( topLeftCylinder );
+        this.add( topRightCylinder );
+        this.add( middleLeftCylinder );
+        this.add( middleRightCylinder );
+        this.add( bottomLeftCylinder );
+        this.add( bottomRightCylinder );
         
         
 

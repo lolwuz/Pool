@@ -38,7 +38,6 @@ class Game{
         this.scene.add(this.cubeMesh);
         */
         //
-
       
         this.renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -54,7 +53,7 @@ class Game{
         this.controls.enableRotate = true;
         this.controls.minPolarAngle = Math.PI / 6;
         this.controls.maxPolarAngle = Math.PI / 2;
-        
+      
         // Add table and set postion
         this.table = new Table();
         this.scene.add(this.table);
