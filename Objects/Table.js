@@ -20,16 +20,20 @@ class Table extends THREE.Object3D {
             texture.offset.set( 0, 0 );
             texture.repeat.set( 3, 6);
         });
+        let fieldTextureSPEC = new THREE.TextureLoader().load( "./textures/table/clothSPEC.jpg", function(texture){
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set( 0, 0 );
+            texture.repeat.set( 3, 6);
+        });
         
-        let fieldTextureSPEC = new THREE.TextureLoader().load( "./textures/table/clothSPEC.jpg");
-        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, bumpMap: fieldTextureNRM, bumpScale: 0.2} );
+        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, bumpMap: fieldTextureNRM, bumpScale: 0.1, shininess: 20, specularMap: fieldTextureSPEC} );
         let field = new THREE.Mesh( fieldGeometry, fieldMaterial );
         
         // Wood sides
         let woodTexture = new THREE.TextureLoader().load( "./textures/table/floorwood.jpg");
         let woodMaterial = new THREE.MeshPhongMaterial( { map: woodTexture} );
         
-        let woodSideGeometry = new THREE.BoxGeometry( 1, 46, 3 );
+        let woodSideGeometry = new THREE.BoxGeometry( 1, 22, 3 );
         let woodTopGeometry = new THREE.BoxGeometry( 22, 1, 3 );
         
         let woodSideLeft = new THREE.Mesh(  woodSideGeometry, woodMaterial );
