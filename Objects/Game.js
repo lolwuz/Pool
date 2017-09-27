@@ -8,6 +8,9 @@ class Game{
         this.camera.up.set( 0, 0, 1 );
         this.renderer = new THREE.WebGLRenderer({antialias:true});
         this.renderer.setClearColor(0xCCCCFF, 1);
+        this.renderer.shadowMapEnabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMapSoft = true;
 
         /* Cube mesh
         // Load cubeMap
@@ -115,18 +118,36 @@ class Game{
             this.scene.add(this.ballArray[i]);
         }
         this.scene.add(this.cue);
+        
+        // Lights 
+        let ambient = new THREE.AmbientLight(0xffffdd, 0.1);
+        
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
+        directionalLight.position.set(0, 30, 20);
+        directionalLight.castShadow = true;
+        
+        let pointLight1 = new THREE.PointLight( 0xffffff, 0.2, 100 );
+        pointLight1.position.set( 0, -12, 20 );
+        pointLight1.castShadow = true;
+        pointLight1.shadow.mapSize.width = 2048;  // default
+        pointLight1.shadow.mapSize.height = 2048; // default
+        pointLight1.shadow.camera.near = 0.5;       // default
+        pointLight1.shadow.camera.far = 500      // default
+        pointLight1.shadowDarkness = 0.1;
 
-        // Light
-        let ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.6);
-        let lightBulb1 = new THREE.PointLight(0xFFFFFF, 0.3, 50);
-        let lightBulb2 = new THREE.PointLight(0xFFFFFF, 0.3, 50);
-
-        this.scene.add(ambientLight);
-        this.scene.add(lightBulb1);
-        this.scene.add(lightBulb2);
-
-        lightBulb1.position.set( 0, 9, 8 );
-        lightBulb2.position.set( 0, -9, 8 );
+        let pointLight2 = new THREE.PointLight( 0xffffff, 0.2, 100 );
+        pointLight2.position.set( 0, 12, 20);
+        pointLight2.castShadow = true;
+        pointLight2.shadow.mapSize.width = 2048;  // default
+        pointLight2.shadow.mapSize.height = 2048; // default
+        pointLight2.shadow.camera.near = 0.5;       // default
+        pointLight2.shadow.camera.far = 500      // default
+        pointLight2.shadowDarkness = 0.1;
+        
+        this.scene.add( directionalLight );
+        this.scene.add( ambient );
+        this.scene.add( pointLight1 );
+        this.scene.add( pointLight2 );
 
         this.clock = new THREE.Clock();
     };

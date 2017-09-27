@@ -5,6 +5,7 @@ class Cue extends THREE.Mesh{
         let material = new THREE.MeshBasicMaterial( { map: woodTexture } );
         super(geometry, material);
         this.geometry.translate(0, -7, 0);
+        this.castShadow = true;
         this.position.set(ball.position.x, ball.position.y, 0);
         this.speed = 0.6;
         this.selectedBall = ball;
