@@ -19,7 +19,7 @@
         <div class="card blue-grey darken-1">
             <div class="card-content white-text">
                 <span class="card-title" id="player1name">Player 1:</span>
-                <p>Content blablabla</p>
+                <p id="player1turn">blablabla</p>
             </div>
             <div class="card-action">
                 <a href="#">Link</a>
@@ -34,7 +34,7 @@
         <div class="card blue-grey darken-1">
             <div class="card-content white-text">
                 <span class="card-title" id="player2name">Player 2:</span>
-                <p>Content blablabla</p>
+                <p id="player2turn">blablabla</p>
             </div>
             <div class="card-action">
                 <a href="#">Link</a>
@@ -74,14 +74,20 @@
     function animate(){
         requestAnimationFrame( animate );
         game.update();
+
+        // Check turn of player
+        if (game.players[0].isMyTurn) {
+            document.getElementById("player1turn").innerText = "It's my turn :)";
+            document.getElementById("player2turn").innerText = "It's not my turn ;(";
+        } else {
+            document.getElementById("player1turn").innerText = "It's not my turn ;(";
+            document.getElementById("player2turn").innerText = "It's my turn :)";
+        }
     }
 
     function askPlayerNames() {
-        var player1Name=prompt("Please enter name for player 1","");
-        document.getElementById("player1name").innerText += " " + player1Name;
-
-        var player2Name = prompt("Please enter name for player2", "");
-        document.getElementById("player2name").innerText += " " + player2Name;
+        document.getElementById("player1name").innerText += " " + prompt("Please enter name for player 1","");
+        document.getElementById("player2name").innerText += " " + prompt("Please enter name for player 2", "");
     }
 
     function onDocumentKeyDown(event) {

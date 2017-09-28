@@ -21,17 +21,16 @@ class Cue extends THREE.Mesh{
     };
 
     shoot(force){
-        let angle = this.rotation.z - (-90 * Math.PI / 180);
-        let speedX = Math.cos(angle) * force;
-        let speedY = Math.sin(angle) * force;
-        this.selectedBall.setSpeed({x: speedX, y: speedY});
+        // can't shoot while cue is invisible
+        if (this.visible) {
+            let angle = this.rotation.z - (-90 * Math.PI / 180);
+            let speedX = Math.cos(angle) * force;
+            let speedY = Math.sin(angle) * force;
+            this.selectedBall.setSpeed({x: speedX, y: speedY});
+        }
 
         // temp hide cue
-        this.traverse ( function (child) {
-            if (child instanceof THREE.Mesh) {
-                child.visible = false;
-            }
-        });
+        this.visible = false;
     };
 
     update(camera){
@@ -47,13 +46,9 @@ class Cue extends THREE.Mesh{
 
         this.position.set(this.selectedBall.position.x, this.selectedBall.position.y, this.selectedBall.position.z);
 
-        // show cue of speed > ?
-        if (Math.abs(this.selectedBall.speed.y) <= 0.005 && Math.abs(this.selectedBall.speed.x) <= 0.005) {
-            this.traverse ( function (child) {
-                if (child instanceof THREE.Mesh) {
-                    child.visible = true;
-                }
-            });
+        // show cue again when speed of ball is < ...
+        if (Math.abs(this.selectedBall.speed.y) <= 0.002 && Math.abs(this.selectedBall.speed.x) <= 0.002) {
+            this.visible = true;
         }
     };
 }
