@@ -29,27 +29,45 @@ class Table extends THREE.Object3D {
         let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, bumpMap: fieldTextureNRM, bumpScale: 0.1, shininess: 20, specularMap: fieldTextureSPEC} );
         let field = new THREE.Mesh( fieldGeometry, fieldMaterial );
         
-        // Cloth sides
-        let clothTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg");
-        let clothMaterial = new THREE.MeshPhongMaterial( { map: clothTexture} );
+        // Cloth sides  
+        let shape = new THREE.Shape();
+        shape.moveTo(0, 0);
+        shape.lineTo(0, 22);
+        shape.lineTo(0.5, 21.2);
+        shape.lineTo(0.5, 0.8);
+        shape.lineTo(0 , 0);
         
-        let clothSideGeometry = new THREE.BoxGeometry( 0.5, 21, 1 );
-        let clothTopGeometry = new THREE.BoxGeometry( 21, 0.5, 1 );
+        let extrudeSettings = {
+            steps: 1,
+            amount: 1,
+            bevelEnabled: false
+        };
+        
+        let clothTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg");
+        let clothSideGeometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+        let clothMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: clothTexture } );
+       
         
         let clothSideLeftTop = new THREE.Mesh(  clothSideGeometry, clothMaterial );
         let clothSideRightTop = new THREE.Mesh(  clothSideGeometry, clothMaterial );
         let clothSideLeftBottom = new THREE.Mesh(  clothSideGeometry, clothMaterial );
         let clothSideRightBottom = new THREE.Mesh(  clothSideGeometry, clothMaterial );
-         
-        let clothTop = new THREE.Mesh( clothTopGeometry, clothMaterial );
-        let clothBottom = new THREE.Mesh( clothTopGeometry, clothMaterial );
+        let clothTop = new THREE.Mesh( clothSideGeometry, clothMaterial );
+        let clothBottom = new THREE.Mesh( clothSideGeometry, clothMaterial );
         
-        clothSideLeftTop.position.set(-11.75, 12, 0.7);
-        clothSideRightTop.position.set(11.75, 12, 0.7);
-        clothSideLeftBottom.position.set(-11.75, -12, 0.7);
-        clothSideRightBottom.position.set(11.75, -12, 0.7);
-        clothTop.position.set(0, 23.75, 0.7);
-        clothBottom.position.set(0, -23.75, 0.7);
+        clothSideLeftTop.position.set(-12, 1, 0.2);
+        clothSideRightTop.position.set(12, 1, 1.2);
+        clothSideLeftBottom.position.set(-12, -23, 0.2);
+        clothSideRightBottom.position.set(12, -23, 1.2);
+        
+        clothTop.position.set(-11, 24, 0.2);
+        clothBottom.position.set(11, -24, 0.2);
+        
+        clothTop.rotation.set(0, 0, -90 * Math.PI / 180, 0);
+        clothBottom.rotation.set(0, 0, 90 * Math.PI / 180, 0);
+        
+        clothSideRightTop.rotation.set(0, 180 * Math.PI / 180, 0);
+        clothSideRightBottom.rotation.set(0, 180 * Math.PI / 180, 0);
         
         // Wood sides
         let woodTexture = new THREE.TextureLoader().load( "./textures/table/floorwood.jpg");
@@ -97,6 +115,31 @@ class Table extends THREE.Object3D {
         bottomLeftCylinder.rotation.set(1.5708,0,0);
         bottomRightCylinder.rotation.set(1.5708,0,0);
         
+        // Platinum sides
+        let sideGeometry = new THREE.PlaneGeometry( 1.5, 50, 32 );
+        let topGeometry = new THREE.PlaneGeometry(26, 1.5, 32 );
+        
+        let sideMaterial = new THREE.MeshPhongMaterial( {color: 0xE5E4E2, side: THREE.DoubleSide, specular: 0xFFFFFF, shininess: 80} );
+        let leftSidePlane = new THREE.Mesh( sideGeometry, sideMaterial );
+        let rightSidePlane = new THREE.Mesh( sideGeometry, sideMaterial );
+        let topPlane = new THREE.Mesh( topGeometry, sideMaterial );
+        let bottomPlane = new THREE.Mesh(topGeometry , sideMaterial);
+        
+        leftSidePlane.rotation.set(0, -45 * Math.PI / 180, 0);
+        rightSidePlane.rotation.set(0, 45 * Math.PI / 180, 0);
+        topPlane.rotation.set(-45 * Math.PI / 180, 0, 0);
+        bottomPlane.rotation.set(45 * Math.PI / 180, 0, 0);
+        
+        leftSidePlane.position.set(-13.5,0,0.65);
+        rightSidePlane.position.set(13.5,0,0.65);
+        topPlane.position.set(0,25.5,0.65);
+        bottomPlane.position.set(0, -25.5, 0.65);
+        
+        let bottomGeometry = new THREE.CubeGeometry(28.04, 52.04, 4);
+        let bottom = new THREE.Mesh(bottomGeometry, sideMaterial); 
+        
+        bottom.position.set(0,0,-1.87);
+        
         // Shadows
         woodSideLeftTop.receiveShadow = true;
         woodSideRightTop.receiveShadow = true;
@@ -126,6 +169,14 @@ class Table extends THREE.Object3D {
         this.add( middleRightCylinder );
         this.add( bottomLeftCylinder );
         this.add( bottomRightCylinder );
+        
+        this.add( leftSidePlane );
+        this.add( rightSidePlane );
+        this.add(topPlane);
+        this.add(bottomPlane);
+        
+        this.add(bottom);
+        
         
         
 
