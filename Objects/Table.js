@@ -29,18 +29,39 @@ class Table extends THREE.Object3D {
         let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, bumpMap: fieldTextureNRM, bumpScale: 0.1, shininess: 20, specularMap: fieldTextureSPEC} );
         let field = new THREE.Mesh( fieldGeometry, fieldMaterial );
         
+        // Cloth sides
+        let clothTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg");
+        let clothMaterial = new THREE.MeshPhongMaterial( { map: clothTexture} );
+        
+        let clothSideGeometry = new THREE.BoxGeometry( 0.5, 21, 1 );
+        let clothTopGeometry = new THREE.BoxGeometry( 21, 0.5, 1 );
+        
+        let clothSideLeftTop = new THREE.Mesh(  clothSideGeometry, clothMaterial );
+        let clothSideRightTop = new THREE.Mesh(  clothSideGeometry, clothMaterial );
+        let clothSideLeftBottom = new THREE.Mesh(  clothSideGeometry, clothMaterial );
+        let clothSideRightBottom = new THREE.Mesh(  clothSideGeometry, clothMaterial );
+         
+        let clothTop = new THREE.Mesh( clothTopGeometry, clothMaterial );
+        let clothBottom = new THREE.Mesh( clothTopGeometry, clothMaterial );
+        
+        clothSideLeftTop.position.set(-11.75, 12, 0.7);
+        clothSideRightTop.position.set(11.75, 12, 0.7);
+        clothSideLeftBottom.position.set(-11.75, -12, 0.7);
+        clothSideRightBottom.position.set(11.75, -12, 0.7);
+        clothTop.position.set(0, 23.75, 0.7);
+        clothBottom.position.set(0, -23.75, 0.7);
+        
         // Wood sides
         let woodTexture = new THREE.TextureLoader().load( "./textures/table/floorwood.jpg");
         let woodMaterial = new THREE.MeshPhongMaterial( { map: woodTexture} );
-        
-        let woodSideGeometry = new THREE.BoxGeometry( 1, 21, 3 );
-        let woodTopGeometry = new THREE.BoxGeometry( 21, 1, 3 );
+
+        let woodSideGeometry = new THREE.BoxGeometry( 1, 22, 3 );
+        let woodTopGeometry = new THREE.BoxGeometry( 22, 1, 3 );
         
         let woodSideLeftTop = new THREE.Mesh(  woodSideGeometry, woodMaterial );
         let woodSideRightTop = new THREE.Mesh(  woodSideGeometry, woodMaterial );
         let woodSideLeftBottom = new THREE.Mesh(  woodSideGeometry, woodMaterial );
         let woodSideRightBottom = new THREE.Mesh(  woodSideGeometry, woodMaterial );
-         
         let woodTop = new THREE.Mesh( woodTopGeometry, woodMaterial );
         let woodBottom = new THREE.Mesh( woodTopGeometry, woodMaterial );
         
@@ -64,8 +85,8 @@ class Table extends THREE.Object3D {
     
         topLeftCylinder.position.set(this.dimensions.topLeft.x, this.dimensions.topLeft.y, 0);
         topRightCylinder.position.set(this.dimensions.topRight.x, this.dimensions.topRight.y, 0);
-        middleLeftCylinder.position.set(this.dimensions.topLeft.x, (this.dimensions.topLeft.y + this.dimensions.bottomLeft.y) / 2, 0);
-        middleRightCylinder.position.set(this.dimensions.topRight.x, (this.dimensions.topRight.y + this.dimensions.bottomRight.y) / 2, 0);
+        middleLeftCylinder.position.set(this.dimensions.topLeft.x - 0.5, (this.dimensions.topLeft.y + this.dimensions.bottomLeft.y) / 2, 0);
+        middleRightCylinder.position.set(this.dimensions.topRight.x + 0.5, (this.dimensions.topRight.y + this.dimensions.bottomRight.y) / 2, 0);
         bottomLeftCylinder.position.set(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 0);
         bottomRightCylinder.position.set(this.dimensions.bottomRight.x, this.dimensions.bottomRight.y, 0);
          
@@ -84,12 +105,21 @@ class Table extends THREE.Object3D {
         field.receiveShadow = true;
         
         this.add( field );
+        
         this.add( woodSideLeftTop );
         this.add( woodSideRightTop );
         this.add( woodSideLeftBottom );
         this.add( woodSideRightBottom );
         this.add( woodTop );
         this.add( woodBottom );
+        
+        this.add( clothSideLeftTop );
+        this.add( clothSideRightTop );
+        this.add( clothSideLeftBottom );
+        this.add( clothSideRightBottom );
+        this.add( clothTop );
+        this.add( clothBottom );
+        
         this.add( topLeftCylinder );
         this.add( topRightCylinder );
         this.add( middleLeftCylinder );
