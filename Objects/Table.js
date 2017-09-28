@@ -13,20 +13,20 @@ class Table extends THREE.Object3D {
         let fieldTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg" , function(texture){
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 3, 6 );
+            texture.repeat.set( 6, 12 );
         });
         let fieldTextureNRM = new THREE.TextureLoader().load( "./textures/table/clothNRM.jpg", function(texture){
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 1, 1);
+            texture.repeat.set( 6, 12);
         });
         let fieldTextureSPEC = new THREE.TextureLoader().load( "./textures/table/clothSPEC.jpg", function(texture){
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 1, 1);
+            texture.repeat.set( 6, 12);
         });
         
-        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, shininess: 20, specularMap: fieldTextureSPEC} );
+        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, shininess: 20, bumpMap: fieldTextureNRM, bumpScale: 0.2, specularMap: fieldTextureSPEC} );
         let field = new THREE.Mesh( fieldGeometry, fieldMaterial );
         
         // Cloth sides  
@@ -43,17 +43,14 @@ class Table extends THREE.Object3D {
             bevelEnabled: false
         };
         
-        let clothTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg");
-        let clothSideGeometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-        let clothMaterial = new THREE.MeshLambertMaterial( { color: 0x00ff00, map: clothTexture } );
-       
+        let clothSideGeometry = new THREE.ExtrudeGeometry( shape, extrudeSettings ); 
         
-        let clothSideLeftTop = new THREE.Mesh(  clothSideGeometry, clothMaterial );
-        let clothSideRightTop = new THREE.Mesh(  clothSideGeometry, clothMaterial );
-        let clothSideLeftBottom = new THREE.Mesh(  clothSideGeometry, clothMaterial );
-        let clothSideRightBottom = new THREE.Mesh(  clothSideGeometry, clothMaterial );
-        let clothTop = new THREE.Mesh( clothSideGeometry, clothMaterial );
-        let clothBottom = new THREE.Mesh( clothSideGeometry, clothMaterial );
+        let clothSideLeftTop = new THREE.Mesh(  clothSideGeometry, fieldMaterial );
+        let clothSideRightTop = new THREE.Mesh(  clothSideGeometry, fieldMaterial );
+        let clothSideLeftBottom = new THREE.Mesh(  clothSideGeometry, fieldMaterial );
+        let clothSideRightBottom = new THREE.Mesh(  clothSideGeometry, fieldMaterial);
+        let clothTop = new THREE.Mesh( clothSideGeometry, fieldMaterial );
+        let clothBottom = new THREE.Mesh( clothSideGeometry, fieldMaterial );
         
         clothSideLeftTop.position.set(-12, 1, 0.2);
         clothSideRightTop.position.set(12, 1, 1.2);
@@ -70,7 +67,7 @@ class Table extends THREE.Object3D {
         clothSideRightBottom.rotation.set(0, 180 * Math.PI / 180, 0);
         
         // Wood sides
-        let woodTexture = new THREE.TextureLoader().load( "./textures/table/floorwood.jpg");
+        let woodTexture = new THREE.TextureLoader().load( "./textures/table/wood.jpg");
         let woodMaterial = new THREE.MeshLambertMaterial( { map: woodTexture} );
 
         let woodSideGeometry = new THREE.BoxGeometry( 1, 22, 3 );
@@ -142,6 +139,10 @@ class Table extends THREE.Object3D {
         
         // Shadows
         field.receiveShadow = true;
+        clothSideLeftTop.receiveShadow = true;
+        clothSideRightTop.receiveShadow = true;
+        clothSideLeftBottom.receiveShadow = true;
+        clothSideRightBottom.receiveShadow = true;
         
         this.add( field );
         
@@ -172,13 +173,5 @@ class Table extends THREE.Object3D {
         this.add(bottomPlane);
         
         this.add(bottom);
-        
-        
-        
-
-        // let tableGeometry = new THR
-        // let mesh = new THREE.Mesh();
-        
-        this.receiveShadow = true;
     }
 }

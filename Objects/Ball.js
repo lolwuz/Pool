@@ -30,8 +30,7 @@ class Ball extends THREE.Mesh{
 
         if(distance < 1){ // Collision!
             // Play sound
-            //sound.play();
-            
+            //sound.play();    
             let movementAngleA = Math.atan2(this.speed.y, this.speed.x);
             let movementAngleB = Math.atan2(Ball.speed.y, Ball.speed.x);
             let velocityA = Math.sqrt(Math.pow(this.speed.y, 2) + Math.pow(this.speed.x, 2));
@@ -61,28 +60,19 @@ class Ball extends THREE.Mesh{
 
     checkCollisionTable(Table){
         // Reverse speed when boundary off the table have been reached.
-        if( this.position.x + 0.5 > Table.dimensions.topRight.x || this.position.x - 0.5 < Table.dimensions.topLeft.x){
+        if( this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x){
             this.speed.x *= -1;
         }
-        if( this.position.y + 0.5 > Table.dimensions.topRight.y || this.position.y - 0.5 < Table.dimensions.bottomRight.y){
+        if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){
             this.speed.y *= -1;
         }
     };
 
     move(deltaTime){
         // Setting rolling resistance.
-        this.speed.x = this.speed.x * (1 - 0.02 * deltaTime);
-        this.speed.y = this.speed.y * (1 - 0.02 * deltaTime);
-        
-        /*
-        // If speed is to low the ball stops rolling. 
-        let speed = Math.atan2(this.speed.y, this.speed.x);
-        console.log();
-        if(Math.atan2(this.speed.y, this.speed.x) < 0.02){
-            this.speed = new THREE.Vector2();
-        }   
-        */
-    
+        this.speed.x = this.speed.x * (1 - 0.01 * deltaTime);
+        this.speed.y = this.speed.y * (1 - 0.01 * deltaTime);
+     
         // Set new position according to x/y speed.
         let stepX = this.speed.x * deltaTime;
         let stepY = this.speed.y * deltaTime;

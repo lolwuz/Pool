@@ -8,9 +8,9 @@ class Game{
         this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas, antialias:true });
         this.renderer.setClearColor(0xCCCCFF, 1);
         this.renderer.shadowMap.Enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        this.renderer.shadowMapSoft = true;
+        
         this.renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( this.renderer.domElement );
 
         /* Cube mesh
         // Load cubeMap
@@ -71,22 +71,22 @@ class Game{
         this.table.position.set(0, 0, -1);
         
         this.ballArray = [
-            new Ball(0, {x: 0, y: -10}),
-            new Ball(9, {x: 0, y: 9}),
-            new Ball(12, {x: -0.51, y: 10}),
-            new Ball(7, {x: 0.51, y: 10}),
-            new Ball(1, {x: -1.01, y: 11}),
-            new Ball(8, {x: 0, y: 11}),
-            new Ball(15, {x: 1.01, y: 11}),
-            new Ball(14, {x: -1.53, y: 12}),
-            new Ball(3, {x: -0.51, y: 12}),
-            new Ball(10, {x: 0.51, y: 12}),
-            new Ball(6, {x: 1.53, y: 12}),
-            new Ball(5, {x: -2.02, y: 13}),
-            new Ball(4, {x: -1.01, y: 13}),
-            new Ball(13, {x: 0, y: 13}),
-            new Ball(2, {x: 1.01, y: 13}),
-            new Ball(11, {x: 2.02, y: 13})
+            new Ball(0, {x: 0, y: -16}),
+            new Ball(9, {x: 0, y: 13}),
+            new Ball(12, {x: -0.51, y: 14}),
+            new Ball(7, {x: 0.51, y: 14}),
+            new Ball(1, {x: -1.01, y: 15}),
+            new Ball(8, {x: 0, y: 15}),
+            new Ball(15, {x: 1.01, y: 15}),
+            new Ball(14, {x: -1.53, y: 16}),
+            new Ball(3, {x: -0.51, y: 16}),
+            new Ball(10, {x: 0.51, y: 16}),
+            new Ball(6, {x: 1.53, y: 16}),
+            new Ball(5, {x: -2.02, y: 17}),
+            new Ball(4, {x: -1.01, y: 17}),
+            new Ball(13, {x: 0, y: 17}),
+            new Ball(2, {x: 1.01, y: 17}),
+            new Ball(11, {x: 2.02, y: 17})
         ];
         
         this.cue = new Cue(this.ballArray[0]);
@@ -109,17 +109,18 @@ class Game{
         this.scene.add(this.cue);
         
         // Lights 
-        let ambient = new THREE.AmbientLight(0xffffdd, 0.2);
+        let ambient = new THREE.AmbientLight(0xffffdd, 0.1);
         
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.35);
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
         directionalLight.position.set(0, 10, 20);
         directionalLight.castShadow = true;
         
-        let pointLight1 = new THREE.PointLight( 0xffffff, 0.25, 100 );
+        let pointLight1 = new THREE.PointLight( 0xffffff, 0.2, 100 );
         pointLight1.position.set( 0, -12, 20 );
         pointLight1.castShadow = true;
+        pointLight1.shadowDarkness = 0.5;
 
-        let pointLight2 = new THREE.PointLight( 0xffffff, 0.25, 100 );
+        let pointLight2 = new THREE.PointLight( 0xffffff, 0.2, 100 );
         pointLight2.position.set( 0, 12, 20);
         pointLight2.castShadow = true;
         
@@ -131,8 +132,7 @@ class Game{
         
         // Add Clock 
         this.clock = new THREE.Clock();
-        
-        document.body.appendChild( this.renderer.domElement );
+
     };
 
     update(){
