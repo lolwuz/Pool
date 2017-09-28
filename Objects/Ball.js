@@ -30,7 +30,7 @@ class Ball extends THREE.Mesh{
 
         if(distance < 1){ // Collision!
             // Play sound
-            sound.play();
+            //sound.play();
             
             let movementAngleA = Math.atan2(this.speed.y, this.speed.x);
             let movementAngleB = Math.atan2(Ball.speed.y, Ball.speed.x);

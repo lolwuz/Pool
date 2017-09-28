@@ -71,11 +71,12 @@
         document.addEventListener( 'click', onDocumentMouseClick, false );
     }
 
-    function animate(){
+    function animate(){  
         requestAnimationFrame( animate );
         game.update();
 
         // Check turn of player
+        /*
         if (game.players[0].isMyTurn) {
             document.getElementById("player1turn").innerText = "It's my turn :)";
             document.getElementById("player2turn").innerText = "It's not my turn ;(";
@@ -83,6 +84,7 @@
             document.getElementById("player1turn").innerText = "It's not my turn ;(";
             document.getElementById("player2turn").innerText = "It's my turn :)";
         }
+        */
     }
 
     function askPlayerNames() {

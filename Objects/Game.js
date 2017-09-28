@@ -54,9 +54,6 @@ class Game{
             game.hitSound.setRefDistance( 20 );
         });
 
-
-        document.body.appendChild( this.renderer.domElement );
-
         // Add orbit controlls to the scene.
         this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
         this.controls.enableDamping = true;
@@ -134,6 +131,8 @@ class Game{
         
         // Add Clock 
         this.clock = new THREE.Clock();
+        
+        document.body.appendChild( this.renderer.domElement );
     };
 
     update(){
@@ -153,7 +152,9 @@ class Game{
         
         // Set camera to rotate and look at selected ball
         this.camera.lookAt(this.cue.selectedBall.position);
-        this.controls.target = this.cue.selectedBall.position; 
+        this.controls.target.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0); 
+        
+        this.controls.update();
 
         // Update camera
         this.renderer.render(this.scene, this.camera);
