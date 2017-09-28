@@ -93,9 +93,9 @@ class Game{
         this.scene.add(this.cue);
         
         // Lights 
-        let ambient = new THREE.AmbientLight(0xffffdd, 0.1);
+        let ambient = new THREE.AmbientLight(0xffffdd, 0.2);
         
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.25);
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.35);
         directionalLight.position.set(0, 10, 20);
         directionalLight.castShadow = true;
         
