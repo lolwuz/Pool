@@ -10,6 +10,7 @@ class Game{
         this.renderer.shadowMap.Enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.shadowMapSoft = true;
+        this.renderer.setSize( window.innerWidth, window.innerHeight );
 
         /* Cube mesh
         // Load cubeMap
@@ -36,9 +37,23 @@ class Game{
         this.cubeMesh.scale.y = -1;
         this.scene.add(this.cubeMesh);
         */
-        //
+    
+        
+        //Create an AudioListener and add it to the camera
+        let listener = new THREE.AudioListener();
+        this.camera.add( listener );
+
+        //Create the PositionalAudio object (passing in the listener)
+        this.hitSound = new THREE.PositionalAudio( listener );
       
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
+
+        //Load a sound and set it as the PositionalAudio object's buffer
+        let audioLoader = new THREE.AudioLoader();
+        audioLoader.load( './sound/hit.mp3', function( buffer ) {
+            game.hitSound.setBuffer( buffer );
+            game.hitSound.setRefDistance( 20 );
+        });
+
 
         document.body.appendChild( this.renderer.domElement );
 
@@ -76,6 +91,7 @@ class Game{
             new Ball(2, {x: 1.01, y: 13}),
             new Ball(11, {x: 2.02, y: 13})
         ];
+        
         this.cue = new Cue(this.ballArray[0]);
 
         this.camera.lookAt(this.ballArray[0].position);
@@ -88,8 +104,11 @@ class Game{
 
         // Add objects to the scene.
         for(let i = 0; i < this.ballArray.length; i++){
+            this.ballArray[i].add(this.hitSound);
             this.scene.add(this.ballArray[i]);
         }
+        
+        console.log(this.ballArray[0]);
         this.scene.add(this.cue);
         
         // Lights 
@@ -111,7 +130,9 @@ class Game{
         this.scene.add( ambient );
         this.scene.add( pointLight1 );
         this.scene.add( pointLight2 );
-
+    
+        
+        // Add Clock 
         this.clock = new THREE.Clock();
     };
 
@@ -121,7 +142,7 @@ class Game{
         for (let i = 0; i < this.ballArray.length; i++) {
             for(let ii=0; ii < this.ballArray.length; ii++){
                 if(this.ballArray[i] !== this.ballArray[ii]){
-                    this.ballArray[i].checkCollisionBall(this.ballArray[ii]);
+                    this.ballArray[i].checkCollisionBall(this.ballArray[ii], this.hitSound);
                 }
             }
             this.ballArray[i].checkCollisionTable(this.table);

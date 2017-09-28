@@ -21,7 +21,7 @@ class Ball extends THREE.Mesh{
         this.position = position;
     };
 
-    checkCollisionBall(Ball){
+    checkCollisionBall(Ball, sound){
         // Calculating distance between Balls.
         let dx = Ball.position.x - this.position.x;
         let dy = Ball.position.y - this.position.y;
@@ -29,6 +29,9 @@ class Ball extends THREE.Mesh{
 
 
         if(distance < 1){ // Collision!
+            // Play sound
+            sound.play();
+            
             let movementAngleA = Math.atan2(this.speed.y, this.speed.x);
             let movementAngleB = Math.atan2(Ball.speed.y, Ball.speed.x);
             let velocityA = Math.sqrt(Math.pow(this.speed.y, 2) + Math.pow(this.speed.x, 2));
