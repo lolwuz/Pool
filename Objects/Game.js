@@ -1,4 +1,3 @@
-
 class Game{
     constructor(player1, player2){
         // Create a scene with objects.
@@ -6,7 +5,7 @@ class Game{
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
         this.camera.up.set( 0, 0, 1 );
-        this.renderer = new THREE.WebGLRenderer({antialias:true});
+        this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas, antialias:true });
         this.renderer.setClearColor(0xCCCCFF, 1);
         this.renderer.shadowMap.Enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
