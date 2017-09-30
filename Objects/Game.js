@@ -5,9 +5,11 @@ class Game{
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
         this.camera.up.set( 0, 0, 1 );
-        this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas, antialias:true });
+        this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas});
         this.renderer.setClearColor(0xCCCCFF, 1);
-        this.renderer.shadowMap.Enabled = true;
+        this.renderer.shadowMapEnabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMapSoft = true;
         
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
@@ -69,7 +71,9 @@ class Game{
         this.table = new Table();
         this.scene.add(this.table);
         this.table.position.set(0, 0, -1);
+        this.table.receiveShadow = true;
         
+        // Add balls
         this.ballArray = [
             new Ball(0, {x: 0, y: -16}),
             new Ball(9, {x: 0, y: 13}),
@@ -89,10 +93,13 @@ class Game{
             new Ball(11, {x: 2.02, y: 17})
         ];
         
+        // Add cue + helper
         this.cue = new Cue(this.ballArray[0]);
+        this.helper = new Helper(this.cue.selectedBall.position, this.cue.rotation.z);
+    
 
         this.camera.lookAt(this.ballArray[0].position);
-        this.camera.position.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.x, 40);
+        this.camera.position.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 40);
 
         this.players = [
             player1,
@@ -107,6 +114,7 @@ class Game{
         
         console.log(this.ballArray[0]);
         this.scene.add(this.cue);
+        this.scene.add(this.helper);
         
         // Lights 
         let ambient = new THREE.AmbientLight(0xffffdd, 0.1);
@@ -118,6 +126,7 @@ class Game{
         let pointLight1 = new THREE.PointLight( 0xffffff, 0.2, 100 );
         pointLight1.position.set( 0, -12, 20 );
         pointLight1.castShadow = true;
+        pointLight1.shadowCameraVisible = true;
         pointLight1.shadowDarkness = 0.5;
 
         let pointLight2 = new THREE.PointLight( 0xffffff, 0.2, 100 );
@@ -149,12 +158,14 @@ class Game{
         }
         // Update Cue movement
         this.cue.update(this.camera);
+        this.helper.checkCollide(this.table, this.cue.selectedBall.position, this.cue.rotation.z);
+
         
         // Set camera to rotate and look at selected ball
         this.camera.lookAt(this.cue.selectedBall.position);
         this.controls.target.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0); 
         
-        this.controls.update();
+    
 
         // Update camera
         this.renderer.render(this.scene, this.camera);

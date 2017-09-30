@@ -13,21 +13,23 @@ class Table extends THREE.Object3D {
         let fieldTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg" , function(texture){
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 6, 12 );
+            texture.repeat.set( 3, 6 );
         });
         let fieldTextureNRM = new THREE.TextureLoader().load( "./textures/table/clothNRM.jpg", function(texture){
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 6, 12);
+            texture.repeat.set( 3, 6);
         });
         let fieldTextureSPEC = new THREE.TextureLoader().load( "./textures/table/clothSPEC.jpg", function(texture){
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 6, 12);
+            texture.repeat.set( 3, 6);
         });
         
-        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, map: fieldTexture, shininess: 20, bumpMap: fieldTextureNRM, bumpScale: 0.2, specularMap: fieldTextureSPEC} );
+        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, shininess: 20, bumpMap: fieldTextureNRM, bumpScale: 0.2} );
         let field = new THREE.Mesh( fieldGeometry, fieldMaterial );
+        
+        field.receiveShadow = true;
         
         // Cloth sides  
         let shape = new THREE.Shape();
