@@ -5,7 +5,7 @@ class Game{
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
         this.camera.up.set( 0, 0, 1 );
-        this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas});
+        this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas,  antialias: true});
         this.renderer.setClearColor(0xCCCCFF, 1);
         this.renderer.shadowMapEnabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -14,14 +14,14 @@ class Game{
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
 
-        /* Cube mesh
+
         // Load cubeMap
-        let path = "./3D/texture/Sides/";
-        let format = ".png";
+        let path = "./3D/texture/sky/";
+        let format = ".jpg";
         let urls = [
-            path + 'nx' + format, path + 'px' + format,
-            path + 'pz' + format, path + 'nz' + format,
-            path + 'py' + format, path + 'ny' + format
+            path + 'face-l' + format, path + 'face-f' + format,
+            path + 'face-r' + format, path + 'face-b' + format,
+            path + 'face-t' + format, path + 'face-d' + format
         ];
         let cubeMaterial = new THREE.CubeTextureLoader().load(urls);
         let shader = THREE.ShaderLib.cube;
@@ -35,10 +35,10 @@ class Game{
                 side: THREE.DoubleSide
         });
 
-        this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
-        this.cubeMesh.scale.y = -1;
+        this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), material);
+        this.cubeMesh.scale.y = 1;
         this.scene.add(this.cubeMesh);
-        */
+   
     
         
         //Create an AudioListener and add it to the camera
@@ -165,7 +165,7 @@ class Game{
         this.camera.lookAt(this.cue.selectedBall.position);
         this.controls.target.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0); 
         
-    
+        this.controls.update();
 
         // Update camera
         this.renderer.render(this.scene, this.camera);

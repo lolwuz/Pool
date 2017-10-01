@@ -26,7 +26,7 @@ class Table extends THREE.Object3D {
             texture.repeat.set( 3, 6);
         });
         
-        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00, shininess: 20, bumpMap: fieldTextureNRM, bumpScale: 0.2} );
+        let fieldMaterial = new THREE.MeshPhongMaterial( { color: 0x42a8ff, shininess: 20, bumpMap: fieldTexture, bumpScale: 0.1} );
         let field = new THREE.Mesh( fieldGeometry, fieldMaterial );
         
         field.receiveShadow = true;

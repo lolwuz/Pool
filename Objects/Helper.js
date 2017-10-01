@@ -1,20 +1,16 @@
 class Helper extends THREE.Mesh{
     constructor(start, angle){
-        let geometry = new THREE.CylinderGeometry( 0.1, 0.1, 20, 32 );
+        var geometry = new THREE.SphereGeometry(0.5, 128, 128);;        
         let material = new THREE.MeshPhongMaterial({
-            color: 0xff0000,
-        });
-        
-        let dx = Math.sin(angle) * 1000;
-        let dy = Math.cos(angle) * 1000;
-        
+            color: 0xffffff,
+        });    
         super(geometry, material);
     };
     
 
     checkCollide(table, target, angle){ 
-        let dx = Math.sin(-angle) * 100.0;
-        let dy = Math.cos(-angle) * 100.0; 
+        let dx = Math.sin(-angle) * 100;
+        let dy = Math.cos(-angle) * 100; 
         
         let targetLine = { x:  target.x + dx, y: target.y + dy};
             
@@ -27,15 +23,7 @@ class Helper extends THREE.Mesh{
         
         for(let i = 0; i < returnArr.length; i++){
             if(returnArr[i] !== "null"){     
-                
-                let dx = target.x - returnArr[i].x;
-                let dy = target.y - returnArr[i].y;
-                
-                
-                let length = Math.atan2(dx, dy);
-                console.log(length);
-                let geometry = new THREE.CylinderGeometry( 0.1, 0.1, length, 32 );
-                this.geometry = geometry;
+                this.position.set(returnArr[i].x, returnArr[i].y, 0); 
                 return returnArr[i];
             }
         }
@@ -58,6 +46,7 @@ class Helper extends THREE.Mesh{
                 && x >= Math.min(pos3.x, pos4.x) && x <= Math.max(pos3.x, pos4.x)
                 && y >= Math.min(pos1.y, pos2.y) && y <= Math.max(pos1.y, pos2.y) 
                 && y >= Math.min(pos3.y, pos4.y) && y <= Math.max(pos3.y, pos4.y)){
+                console.log(x, y);
                 return {x: x, y: y}
             };     
         }  
