@@ -46,7 +46,6 @@ class Helper extends THREE.Mesh{
                 && x >= Math.min(pos3.x, pos4.x) && x <= Math.max(pos3.x, pos4.x)
                 && y >= Math.min(pos1.y, pos2.y) && y <= Math.max(pos1.y, pos2.y) 
                 && y >= Math.min(pos3.y, pos4.y) && y <= Math.max(pos3.y, pos4.y)){
-                console.log(x, y);
                 return {x: x, y: y}
             };     
         }  

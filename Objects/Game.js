@@ -7,7 +7,7 @@ class Game{
         this.camera.up.set( 0, 0, 1 );
         this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas,  antialias: true});
         this.renderer.setClearColor(0xCCCCFF, 1);
-        this.renderer.shadowMapEnabled = true;
+        this.renderer.shadowMap.Enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.shadowMapSoft = true;
         
@@ -126,8 +126,6 @@ class Game{
         let pointLight1 = new THREE.PointLight( 0xffffff, 0.2, 100 );
         pointLight1.position.set( 0, -12, 20 );
         pointLight1.castShadow = true;
-        pointLight1.shadowCameraVisible = true;
-        pointLight1.shadowDarkness = 0.5;
 
         let pointLight2 = new THREE.PointLight( 0xffffff, 0.2, 100 );
         pointLight2.position.set( 0, 12, 20);

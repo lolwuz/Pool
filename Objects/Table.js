@@ -68,6 +68,13 @@ class Table extends THREE.Object3D {
         clothSideRightTop.rotation.set(0, 180 * Math.PI / 180, 0);
         clothSideRightBottom.rotation.set(0, 180 * Math.PI / 180, 0);
         
+        // Side
+        
+        let shape2 = new THREE.Shape();
+        shape2.moveTo(0, 0);
+        shape2.lineTo(0, 1);
+        shape2.bezierCurveTo(1,2);
+        
         // Wood sides
         let woodTexture = new THREE.TextureLoader().load( "./textures/table/wood.jpg");
         let woodMaterial = new THREE.MeshLambertMaterial( { map: woodTexture} );
@@ -146,8 +153,7 @@ class Table extends THREE.Object3D {
         clothSideLeftBottom.receiveShadow = true;
         clothSideRightBottom.receiveShadow = true;
         
-        this.add( field );
-        
+        this.add( field ); 
         this.add( woodSideLeftTop );
         this.add( woodSideRightTop );
         this.add( woodSideLeftBottom );
@@ -175,5 +181,10 @@ class Table extends THREE.Object3D {
         this.add(bottomPlane);
         
         this.add(bottom);
+
+     
+        this.up.set(0, 1, 0);
+    
+        //this.mesh.geometry.computeFaceNormals();
     }
 }

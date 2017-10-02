@@ -11,6 +11,7 @@ class Ball extends THREE.Mesh{
         this.castShadow = true;
         this.speed = new THREE.Vector2();
         this.position.set(position.x, position.y, 0);
+        this.raycaster = new THREE.Raycaster();
     };
 
     setSpeed(speed){
@@ -58,14 +59,35 @@ class Ball extends THREE.Mesh{
         }
     };
 
-    checkCollisionTable(Table){
+    checkCollisionTable(Table){       
+        let direction = new THREE.Vector3(this.speed.x, this.speed.y, 0);
+        this.raycaster.set(this.position, direction)
+        
+        let intersections = this.raycaster.intersectObjects(Table.children);
+        
+        if(intersections.length > 0) {
+            let intersection = intersections[0];
+            let dx = intersection.point.x - this.position.x;
+            let dy = intersection.point.y - this.position.y;
+            let distanceOfIntersect = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+            
+            if(distanceOfIntersect < 0.5) {  
+                console.log(intersection.face.normal);
+                let newDirection = direction.reflect(intersection.face.normal);
+                this.speed.x = newDirection.x;
+                this.speed.y = newDirection.y;
+            } 
+        }
+        
+        /*
         // Reverse speed when boundary off the table have been reached.
         if( this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x){
-            this.speed.x *= -1;
+            //this.speed.x *= -1;
         }
-        if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){
-            this.speed.y *= -1;
+        if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){      
+            //this.speed.y *= -1;
         }
+        */
     };
 
     move(deltaTime){
