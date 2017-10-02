@@ -14,37 +14,46 @@
 <body onload="askPlayerNames()">
 
 <!-- Content -->
-<div class="row" style="position: absolute; top: 10px; left: 10px">
-    <div class="col">
-        <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-                <span class="card-title" id="player1name">Player 1:</span>
-                <p id="player1turn">blablabla</p>
-            </div>
-            <div class="card-action">
-                <a href="#">Link</a>
-                <a href="#">Link</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row" style="position: absolute; top: 10px; right: 10px">
-    <div class="col">
-        <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-                <span class="card-title" id="player2name">Player 2:</span>
-                <p id="player2turn">blablabla</p>
-            </div>
-            <div class="card-action">
-                <a href="#">Link</a>
-                <a href="#">Link</a>
+<div class="container" style="height:100%; width: 100%">
+    <div class="row" style="position:absolute; top:10px; left:10px">
+        <div class="col">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title" id="player1name">Player 1:</span>
+                    <p id="player1turn">Undefined</p>
+                    <p id="player1balls">Balls to pocket: Not known yet</p>
+                </div>
             </div>
         </div>
     </div>
+    <!-- Statistics-->
+    <!--<div class="row" style="position:absolute; top: 150px; left: 10px">-->
+        <!--<div class="col">-->
+            <!--<div class="card blue-grey darken-1">-->
+                <!--<div class="card-content white-text">-->
+                    <!--<span class="card-title">Statistics</span>-->
+                    <!--<p>...</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="row" style="position: absolute; top: 10px; right: 10px">
+        <div class="col">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title" id="player2name">Player 2:</span>
+                    <p id="player2turn">Undefined</p>
+                    <p id="player2balls">Balls to pocket: Not known yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="poolCanvas"></canvas>
+
 </div>
 
-<canvas id="poolCanvas"></canvas>
+
 <!-- /Content -->
 
 <!-- Scripts -->
@@ -61,36 +70,63 @@
     init();
     animate();
 
+    var player1name;
+    var player2name;
+
     var game;
     var mouse = new THREE.Vector2();
     var raycaster = new THREE.Raycaster();
 
-    function init(){
-        game = new Game();
-        window.addEventListener( 'resize', onWindowResize, false );
-        document.addEventListener("keydown", onDocumentKeyDown, false);
-        document.addEventListener( 'click', onDocumentMouseClick, false );
+    function init() {
+        let player1 = new Player(player1name);
+        let player2 = new Player(player2name);
+
+        game = new Game(player1, player2);
+        window.addEventListener('resize', onWindowResize, false);
+        document.addEventListener('keydown', onDocumentKeyDown, false);
+        document.addEventListener('click', onDocumentMouseClick, false);
     }
 
-    function animate(){  
-        requestAnimationFrame( animate );
+    function animate() {
+        requestAnimationFrame(animate);
         game.update();
 
-        // Check turn of player
-        /*
-        if (game.players[0].isMyTurn) {
-            document.getElementById("player1turn").innerText = "It's my turn :)";
-            document.getElementById("player2turn").innerText = "It's not my turn ;(";
-        } else {
-            document.getElementById("player1turn").innerText = "It's not my turn ;(";
-            document.getElementById("player2turn").innerText = "It's my turn :)";
-        }
-        */
+        overlayUpdate();
     }
 
     function askPlayerNames() {
-        document.getElementById("player1name").innerText += " " + prompt("Please enter name for player 1","");
-        document.getElementById("player2name").innerText += " " + prompt("Please enter name for player 2", "");
+        player1name = prompt("Please enter name for player 1", "player 1");
+        player2name = prompt("Please enter name for player 2", "player 2");
+
+        document.getElementById("player1name").innerText += " " + player1name;
+        document.getElementById("player2name").innerText += " " + player2name;
+    }
+
+    function overlayUpdate() {
+        // Check which players' turn it is
+        if (!game.players[0].isMyTurn) {
+            document.getElementById("player1turn").innerText = "Your turn";
+            document.getElementById("player2turn").innerText = "Wait for other players' move";
+        } else {
+            document.getElementById("player1turn").innerText = "Wait for other players' move";
+            document.getElementById("player2turn").innerText = "Your turn";
+        }
+
+        if (game.players[0].myBalls === 0) {
+            // Player1 has to pocket solids (1 to 7)
+            // means Player2 has to pocket striped (9 to 15)
+            if (document.getElementById("player1balls").innerText === "Balls to pocket: striped") {
+                document.getElementById("player1balls").innerText = "Balls to pocket: solids";
+                document.getElementById("player2balls").innerText = "Balls to pocket: striped";
+            }
+        } else if (game.players[0].myBalls === 1) {
+            // Player1 has to pocket striped (9 to 15)
+            // means Player2 has to pocket solids (1 to 7)
+            if (document.getElementById("player1balls").innerText === "Balls to pocket: solids") {
+                document.getElementById("player1balls").innerText = "Balls to pocket: striped";
+                document.getElementById("player2balls").innerText = "Balls to pocket: solids";
+            }
+        }
     }
 
     function onDocumentKeyDown(event) {
@@ -108,14 +144,14 @@
         }
     }
 
-    function onDocumentMouseClick(event){
+    function onDocumentMouseClick(event) {
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-        raycaster.setFromCamera( mouse.clone(), game.camera );
+        mouse.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+        raycaster.setFromCamera(mouse.clone(), game.camera);
 
-        var intersect = raycaster.intersectObjects(game.ballArray);
+        let intersect = raycaster.intersectObjects(game.ballArray);
 
-        for ( let i = 0; i < intersect.length; i++ ) {
+        for (let i = 0; i < intersect.length; i++) {
             game.cue.setBall(intersect[i].object);
             game.camera.lookAt(game.cue.selectedBall.position);
         }
@@ -124,7 +160,7 @@
     function onWindowResize() {
         game.camera.aspect = window.innerWidth / window.innerHeight;
         game.camera.updateProjectionMatrix();
-        game.renderer.setSize( window.innerWidth, window.innerHeight );
+        game.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
 </script>

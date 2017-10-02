@@ -1,7 +1,7 @@
 class Player{
-    constructor(name, myBalls){
+    constructor(name){
         this.name = name;
-        this.myBalls = myBalls;
+        this.myBalls = null;
         this.ballsPocketed = [];
         this.isMyTurn = false;
     };
