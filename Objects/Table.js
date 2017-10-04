@@ -8,6 +8,8 @@ class Table extends THREE.Object3D {
             bottomRight: {x: 12, y: -24}
         };
         
+        this.collidableMeshList = [];
+        
         // Field textures 
         let fieldGeometry = new THREE.BoxGeometry( 24, 48, 1 );
         let fieldTexture = new THREE.TextureLoader().load( "./textures/table/cloth.jpg" , function(texture){
@@ -54,6 +56,8 @@ class Table extends THREE.Object3D {
         let clothTop = new THREE.Mesh( clothSideGeometry, fieldMaterial );
         let clothBottom = new THREE.Mesh( clothSideGeometry, fieldMaterial );
         
+        
+        
         clothSideLeftTop.position.set(-12, 1, 0.2);
         clothSideRightTop.position.set(12, 1, 1.2);
         clothSideLeftBottom.position.set(-12, -23, 0.2);
@@ -68,12 +72,6 @@ class Table extends THREE.Object3D {
         clothSideRightTop.rotation.set(0, 180 * Math.PI / 180, 0);
         clothSideRightBottom.rotation.set(0, 180 * Math.PI / 180, 0);
         
-        // Side
-        
-        let shape2 = new THREE.Shape();
-        shape2.moveTo(0, 0);
-        shape2.lineTo(0, 1);
-        shape2.bezierCurveTo(1,2);
         
         // Wood sides
         let woodTexture = new THREE.TextureLoader().load( "./textures/table/wood.jpg");
@@ -179,11 +177,10 @@ class Table extends THREE.Object3D {
         this.add( rightSidePlane );
         this.add(topPlane);
         this.add(bottomPlane);
-        
+
         this.add(bottom);
 
-     
-        this.up.set(0, 1, 0);
+        this.collidableMeshList.push(clothBottom);
     
         //this.mesh.geometry.computeFaceNormals();
     }

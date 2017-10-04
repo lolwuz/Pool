@@ -59,7 +59,7 @@ class Ball extends THREE.Mesh{
         }
     };
 
-    checkCollisionTable(Table){       
+    checkCollisionTable(Table){  
         let direction = new THREE.Vector3(this.speed.x, this.speed.y, 0);
         this.raycaster.set(this.position, direction)
         
@@ -71,22 +71,22 @@ class Ball extends THREE.Mesh{
             let dy = intersection.point.y - this.position.y;
             let distanceOfIntersect = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
             
-            if(distanceOfIntersect < 0.5) {  
-                console.log(intersection.face.normal);
+            if(distanceOfIntersect < 0.5) { 
+                console.log("hit");
                 let newDirection = direction.reflect(intersection.face.normal);
                 this.speed.x = newDirection.x;
                 this.speed.y = newDirection.y;
             } 
         }
-        
-        /*
+
         // Reverse speed when boundary off the table have been reached.
+        /*
         if( this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x){
-            //this.speed.x *= -1;
+            this.speed.x *= -1;
         }
         if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){      
-            //this.speed.y *= -1;
-        }
+            this.speed.y *= -1;
+        }  
         */
     };
 
@@ -98,7 +98,7 @@ class Ball extends THREE.Mesh{
         // Set new position according to x/y speed.
         let stepX = this.speed.x * deltaTime;
         let stepY = this.speed.y * deltaTime;
-        this.position.set( this.position.x + this.speed.x * deltaTime, this.position.y + this.speed.y * deltaTime, 0 );
+        this.position.set( this.position.x + stepX, this.position.y + stepY, 0 );
 
         // Update ball rotation
         let tempMat = new THREE.Matrix4();
@@ -111,4 +111,4 @@ class Ball extends THREE.Mesh{
         this.matrix = tempMat;
         this.rotation.setFromRotationMatrix(this.matrix);
     };
-}
+} 

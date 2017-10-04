@@ -7,7 +7,7 @@ class Game{
         this.camera.up.set( 0, 0, 1 );
         this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas,  antialias: true});
         this.renderer.setClearColor(0xCCCCFF, 1);
-        this.renderer.shadowMap.Enabled = true;
+        this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.shadowMapSoft = true;
         
@@ -50,22 +50,14 @@ class Game{
       
 
         //Load a sound and set it as the PositionalAudio object's buffer
+        /*
         let audioLoader = new THREE.AudioLoader();
         audioLoader.load( './sound/hit.mp3', function( buffer ) {
             game.hitSound.setBuffer( buffer );
             game.hitSound.setRefDistance( 20 );
         });
+        */
 
-        // Add orbit controlls to the scene.
-        this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.25;
-        this.controls.maxDistance = 100;
-        this.controls.minDistance = 5;
-        this.controls.enablePan = false;
-        this.controls.enableRotate = true;
-        this.controls.minPolarAngle = Math.PI / 6;
-        this.controls.maxPolarAngle = Math.PI / 2;
       
         // Add table and set postion
         this.table = new Table();
@@ -131,6 +123,15 @@ class Game{
         pointLight2.position.set( 0, 12, 20);
         pointLight2.castShadow = true;
         
+        // Add orbit controlls to the scene.
+        this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+        this.controls.maxDistance = 100;
+        this.controls.minDistance = 5;
+        this.controls.enablePan = false;
+        this.controls.enableRotate = true;
+        this.controls.minPolarAngle = Math.PI / 6;
+        this.controls.maxPolarAngle = Math.PI / 2;
+        
         this.scene.add( directionalLight );
         this.scene.add( ambient );
         this.scene.add( pointLight1 );
@@ -139,11 +140,13 @@ class Game{
         
         // Add Clock 
         this.clock = new THREE.Clock();
+        
+        console.log(this.controls);
 
     };
 
     update(){
-        let deltaTime = 60 * this.clock.getDelta();
+        let deltaTime = this.clock.getDelta();
 
         for (let i = 0; i < this.ballArray.length; i++) {
             for(let ii=0; ii < this.ballArray.length; ii++){
@@ -155,15 +158,14 @@ class Game{
             this.ballArray[i].move(deltaTime);
         }
         // Update Cue movement
-        this.cue.update(this.camera);
-        this.helper.checkCollide(this.table, this.cue.selectedBall.position, this.cue.rotation.z);
+        this.cue.update(this.controls.object);
+        //this.helper.checkCollide(this.table, this.cue.selectedBall.position, this.cue.rotation.z);
 
         
         // Set camera to rotate and look at selected ball
-        this.camera.lookAt(this.cue.selectedBall.position);
-        this.controls.target.set(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0); 
-        
-        this.controls.update();
+        // Add orbit controlls to the scene.
+        this.controls.target = new THREE.Vector3(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0);
+     
 
         // Update camera
         this.renderer.render(this.scene, this.camera);
