@@ -53,41 +53,48 @@ class Ball extends THREE.Mesh{
             this.position.x = Ball.position.x - (Math.round(Math.cos(collisionAngle) * 1000) / 1000);
             this.position.y = Ball.position.y - (Math.round(Math.sin(collisionAngle) * 1000) / 1000);
 
-
             this.setSpeed({x: aSpeedX, y: aSpeedY});
             Ball.setSpeed({x: bSpeedX, y: bSpeedY});
         }
     };
 
-    checkCollisionTable(Table){  
+    checkCollisionTable(Table){
+
         let direction = new THREE.Vector3(this.speed.x, this.speed.y, 0);
-        this.raycaster.set(this.position, direction)
-        
+        this.raycaster.set(this.position, direction);       
         let intersections = this.raycaster.intersectObjects(Table.children);
         
-        if(intersections.length > 0) {
-            let intersection = intersections[0];
+        for(let i = 0; i < intersections.length; i++) {
+            let intersection = intersections[i];
             let dx = intersection.point.x - this.position.x;
             let dy = intersection.point.y - this.position.y;
             let distanceOfIntersect = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-            
-            if(distanceOfIntersect < 0.5) { 
-                console.log("hit");
-                let newDirection = direction.reflect(intersection.face.normal);
+
+            if(distanceOfIntersect < 0.5) {
+                // Set new direction
+                let newDirection = new THREE.Vector3(direction.x,direction.y,direction.z); 
+                newDirection.reflect(intersection.face.normal);
+                
                 this.speed.x = newDirection.x;
                 this.speed.y = newDirection.y;
+            
+                let antiNormal = new THREE.Vector3(intersection.face.normal.x, intersection.face.normal.y, intersection.face.normal.z);
+                
+               
+                
+                // Invert direction 
+                this.raycaster.set(this.position, antiNormal); // setting a new raycaster
+                let lastIntersect = this.raycaster.intersectObjects(Table.children);
+     
+                let newPos = lastIntersect[0].point.add(antiNormal.multiplyScalar(-0.5));
+                console.log(newPos);
+                this.position.x = newPos.x;
+                this.position.y = newPos.y;
+                
+
+                
             } 
         }
-
-        // Reverse speed when boundary off the table have been reached.
-        /*
-        if( this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x){
-            this.speed.x *= -1;
-        }
-        if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){      
-            this.speed.y *= -1;
-        }  
-        */
     };
 
     move(deltaTime){

@@ -16,6 +16,7 @@ class Game{
 
 
         // Load cubeMap
+        /*
         let path = "./3D/texture/sky/";
         let format = ".jpg";
         let urls = [
@@ -38,33 +39,14 @@ class Game{
         this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), material);
         this.cubeMesh.scale.y = 1;
         this.scene.add(this.cubeMesh);
-   
-    
-        
-        //Create an AudioListener and add it to the camera
-        let listener = new THREE.AudioListener();
-        this.camera.add( listener );
-
-        //Create the PositionalAudio object (passing in the listener)
-        this.hitSound = new THREE.PositionalAudio( listener );
-      
-
-        //Load a sound and set it as the PositionalAudio object's buffer
-        /*
-        let audioLoader = new THREE.AudioLoader();
-        audioLoader.load( './sound/hit.mp3', function( buffer ) {
-            game.hitSound.setBuffer( buffer );
-            game.hitSound.setRefDistance( 20 );
-        });
         */
-
       
         // Add table and set postion
         this.table = new Table();
         this.scene.add(this.table);
         this.table.position.set(0, 0, -1);
         this.table.receiveShadow = true;
-        
+
         // Add balls
         this.ballArray = [
             new Ball(0, {x: 0, y: -16}),
@@ -100,7 +82,6 @@ class Game{
 
         // Add objects to the scene.
         for(let i = 0; i < this.ballArray.length; i++){
-            this.ballArray[i].add(this.hitSound);
             this.scene.add(this.ballArray[i]);
         }
         
@@ -113,8 +94,7 @@ class Game{
         
         let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
         directionalLight.position.set(0, 10, 20);
-        directionalLight.castShadow = true;
-        
+
         let pointLight1 = new THREE.PointLight( 0xffffff, 0.2, 100 );
         pointLight1.position.set( 0, -12, 20 );
         pointLight1.castShadow = true;
@@ -125,6 +105,7 @@ class Game{
         
         // Add orbit controlls to the scene.
         this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+        this.controls.target = new THREE.Vector3(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0);
         this.controls.maxDistance = 100;
         this.controls.minDistance = 5;
         this.controls.enablePan = false;
@@ -146,7 +127,7 @@ class Game{
     };
 
     update(){
-        let deltaTime = this.clock.getDelta();
+        let deltaTime = 60 * this.clock.getDelta();
 
         for (let i = 0; i < this.ballArray.length; i++) {
             for(let ii=0; ii < this.ballArray.length; ii++){

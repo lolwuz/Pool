@@ -11,7 +11,7 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 </head>
-<body onload="askPlayerNames()">
+<body>
 
 <!-- Content -->
 <div class="container">
@@ -130,7 +130,7 @@
     }
 
     function onDocumentKeyDown(event) {
-        var keyCode = event.which;
+        let keyCode = event.which;
         if (keyCode === 87) {
             game.cue.rotateDegrees(0.1); // W
         } else if (keyCode === 83) {
@@ -140,7 +140,7 @@
         } else if (keyCode === 68) {
             game.cue.rotateDegrees(0.1); // D
         } else if (keyCode === 32) {
-            game.cue.shoot(10); // Space
+            game.cue.shoot(0.5); // Space
         }
     }
 
@@ -153,7 +153,6 @@
 
         for (let i = 0; i < intersect.length; i++) {
             game.cue.setBall(intersect[i].object);
-            game.camera.lookAt(game.cue.selectedBall.position);
         }
     }
 
