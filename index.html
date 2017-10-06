@@ -52,8 +52,6 @@
     <canvas id="poolCanvas"></canvas>
 
 </div>
-
-
 <!-- /Content -->
 
 <!-- Scripts -->
@@ -112,6 +110,10 @@
             document.getElementById("player2turn").innerText = "Your turn";
         }
 
+        // Check which balls are pocketed and to which player they belong
+        //
+
+        // Check which player has to pocket which balls (stripes or solids)
         if (game.players[0].myBalls === 0) {
             // Player1 has to pocket solids (1 to 7)
             // means Player2 has to pocket striped (9 to 15)

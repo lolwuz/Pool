@@ -6,11 +6,15 @@ class Player{
         this.isMyTurn = false;
     };
 
-    pocketBall(Ball){
+    changeTurn() {
+        this.isMyTurn = !this.isMyTurn;
+    }
+
+    pocketBall(Ball) {
         this.ballsPocketed.push(Ball);
     };
 
-    win(){
+    win() {
         // When player wins a game.
     }
 }

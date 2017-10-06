@@ -136,6 +136,7 @@ class Game{
                 }
             }
             this.ballArray[i].checkCollisionTable(this.table);
+            // this.ballArray[i].checkCollisionHole(this.table);
             this.ballArray[i].move(deltaTime);
         }
         // Update Cue movement

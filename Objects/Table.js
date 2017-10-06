@@ -94,7 +94,7 @@ class Table extends THREE.Object3D {
         woodTop.position.set(0, 24.5, -0.3);
         woodBottom.position.set(0, -24.5, -0.3);
     
-        // Pockets
+        // Holes
         let cylinderGeometry = new THREE.CylinderGeometry( 1, 1, 1.4, 20 );
         let cylinderMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
         
@@ -104,14 +104,14 @@ class Table extends THREE.Object3D {
         let middleRightCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
         let bottomLeftCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
         let bottomRightCylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
-    
+
         topLeftCylinder.position.set(this.dimensions.topLeft.x, this.dimensions.topLeft.y, 0);
         topRightCylinder.position.set(this.dimensions.topRight.x, this.dimensions.topRight.y, 0);
         middleLeftCylinder.position.set(this.dimensions.topLeft.x - 0.5, (this.dimensions.topLeft.y + this.dimensions.bottomLeft.y) / 2, 0);
         middleRightCylinder.position.set(this.dimensions.topRight.x + 0.5, (this.dimensions.topRight.y + this.dimensions.bottomRight.y) / 2, 0);
         bottomLeftCylinder.position.set(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 0);
         bottomRightCylinder.position.set(this.dimensions.bottomRight.x, this.dimensions.bottomRight.y, 0);
-         
+
         topLeftCylinder.rotation.set(1.5708,0,0);
         topRightCylinder.rotation.set(1.5708,0,0);
         middleLeftCylinder.rotation.set(1.5708,0,0);
