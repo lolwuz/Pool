@@ -13,26 +13,14 @@ class Ball extends THREE.Mesh {
             map: texture
         });
         super(sphereGeometry, material);
+        this.ballNumber = ballNumber;
+
         this.castShadow = true;
         this.speed = new THREE.Vector2();
         this.position.set(position.x, position.y, 0);
         this.raycaster = new THREE.Raycaster();
         this.pocketed = false; // boolean for if the ball is pocketed (needed? hmm, not sure)
     };
-
-    static isNumNearOtherNum(num1, num2, pixels) {
-
-        for (let i = 0.00; i <= 0.50; i += 0.01) {
-
-            console.log(num1 + " " + num2 + " " + i);
-
-            if (num1.toFixed(2) === (num2 - i).toFixed(2) || num1.toFixed(2) === (num2 + i).toFixed(2)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     setSpeed(speed) {
         this.speed = speed;
@@ -99,26 +87,6 @@ class Ball extends THREE.Mesh {
             if (distanceOfIntersect < 0.5) {
                 console.log("hit");
 
-                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.topLeft.x)) {
-                //     // this.visible = false;
-                //     console.log("near pocket");
-                // }
-                //
-                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.topRight.x)) {
-                //     // this.visible = false;
-                //     console.log("near pocket");
-                // }
-                //
-                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.bottomLeft.x)) {
-                //     // this.visible = false;
-                //     console.log("near pocket");
-                // }
-                //
-                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.bottomRight.x)) {
-                //     // this.visible = false;
-                //     console.log("near pocket");
-                // }
-
                 // Set new direction
                 let newDirection = new THREE.Vector3(direction.x, direction.y, direction.z);
                 newDirection.reflect(intersection.face.normal);
@@ -139,14 +107,43 @@ class Ball extends THREE.Mesh {
             this.position.y = newPos.y;   
         }
         */
-        
-        // Reverse speed when boundary off the table have been reached.
-        if( this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x){
-            this.speed.x *= -1;
+
+        if (!this.pocketed) {
+            // Reverse speed when boundary off the table have been reached.
+            if (this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1< Table.dimensions.topLeft.x) {
+                this.speed.x *= -1;
+            }
+            if (this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y) {
+                this.speed.y *= -1;
+            }
+
+            // Check hole collision
+            // TopLeft Hole
+            if (this.position.x - 1.4 < Table.dimensions.topLeft.x && this.position.y + 1.4 > Table.dimensions.topLeft.y) {
+                this.pocket();
+            }
+            // TopRight Hole
+            if (this.position.x + 1.4 > Table.dimensions.topRight.x && this.position.y + 1.4 > Table.dimensions.topRight.y) {
+                this.pocket();
+            }
+            // BottomLeft Hole
+            if (this.position.x - 1.4 < Table.dimensions.bottomLeft.x && this.position.y - 1.4 < Table.dimensions.bottomLeft.y) {
+                this.pocket();
+            }
+            // BottomRight Hole
+            if (this.position.x + 1.4 > Table.dimensions.bottomRight.x && this.position.y - 1.4 < Table.dimensions.bottomRight.y) {
+                this.pocket();
+            }
+            // MiddleLeft Hole
+            if (this.position.x - 1.4 < Table.dimensions.topLeft.x - 0.5 && this.position.y + 1.4 > (Table.dimensions.topLeft.y + Table.dimensions.bottomLeft.y) / 2) {
+                this.pocket();
+            }
+            // MiddleRight Hole
+            if (this.position.x + 1.4 > Table.dimensions.topRight.x + 0.5 && this.position.y + 1.4 > (Table.dimensions.topRight.y + Table.dimensions.bottomRight.y) / 2) {
+                this.pocket();
+            }
         }
-        if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){
-            this.speed.y *= -1;
-        }
+
     }
 
     move(deltaTime) {
@@ -169,5 +166,18 @@ class Ball extends THREE.Mesh {
         tempMat.multiply(this.matrix);
         this.matrix = tempMat;
         this.rotation.setFromRotationMatrix(this.matrix);
+    }
+
+    pocket() {
+        console.log("ball pocketed");
+        if (this.ballNumber !== 0) {
+            this.visible = false;
+            this.setSpeed({
+                x: 0,
+                y: 0
+            });
+            this.position.set(50, 50, 0);
+            this.pocketed = true;
+        }
     }
 }
