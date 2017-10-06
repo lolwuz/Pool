@@ -38,21 +38,22 @@ class Cue extends THREE.Mesh {
         this.visible = false;
     };
 
-    update(camera) {
-        let dx = this.selectedBall.position.x - camera.position.x;
-        let dy = this.selectedBall.position.y - camera.position.y;
+    update(control) {
+        let dx = this.selectedBall.position.x - control.object.position.x;
+        let dy = this.selectedBall.position.y - control.object.position.y;
 
         let cameraAngle = Math.atan2(dy, dx);
         this.rotation.z = cameraAngle + (-90 * Math.PI / 180);
 
         // Set camera to rotate and look at selected ball
-        camera.lookAt(this.selectedBall.position);
-        // camera.position.set(this.selectedBall.position.x, this.selectedBall.position.y, 40);
-
         this.position.set(this.selectedBall.position.x, this.selectedBall.position.y, this.selectedBall.position.z);
 
         // show cue again when speed of ball is < ...
         if (Math.abs(this.selectedBall.speed.y) <= 0.002 && Math.abs(this.selectedBall.speed.x) <= 0.002) {
+            if(!this.visible){
+                control.target = this.selectedBall.position;
+                control.update();  
+            }
             this.visible = true;
         }
     };

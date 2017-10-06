@@ -6,11 +6,11 @@ class Ball extends THREE.Mesh {
     constructor(ballNumber, position) {
         const sphereGeometry = new THREE.SphereGeometry(0.5, 128, 128);
         const texture = new THREE.TextureLoader().load("./textures/ball/" + ballNumber + ".png");
-        const material = new THREE.MeshPhongMaterial({
+        const material = new THREE.MeshStandardMaterial({
             color: 0xFFFFFF,
-            map: texture,
-            shininess: 10,
-            specular: 0xFFFFFF
+            roughness: 0.25,
+            metalness: 0,
+            map: texture
         });
         super(sphereGeometry, material);
         this.castShadow = true;

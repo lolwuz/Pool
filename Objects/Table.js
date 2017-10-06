@@ -40,11 +40,12 @@ class Table extends THREE.Object3D {
             texture.repeat.set(3, 6);
         });
 
-        let fieldMaterial = new THREE.MeshPhongMaterial({
+        let fieldMaterial = new THREE.MeshStandardMaterial({
             color: 0x42a8ff,
-            shininess: 20,
-            bumpMap: fieldTexture,
-            bumpScale: 0.3
+            map: fieldTexture,
+            roughness: 0.4,
+            metalness: 0,
+            bumpScale: 0.1
         });
         let field = new THREE.Mesh(fieldGeometry, fieldMaterial);
 
@@ -92,7 +93,7 @@ class Table extends THREE.Object3D {
 
         // Wood sides
         let woodTexture = new THREE.TextureLoader().load("./textures/table/wood.jpg");
-        let woodMaterial = new THREE.MeshLambertMaterial({
+        let woodMaterial = new THREE.MeshStandardMaterial({
             map: woodTexture
         });
 
@@ -141,9 +142,6 @@ class Table extends THREE.Object3D {
         bottomRightCylinder.rotation.set(1.5708, 0, 0);
 
         // Platinum sides
-
-        // 
-
         let sideShape = new THREE.Shape();
         sideShape.moveTo(0, 0);
         sideShape.lineTo(1, 0);
@@ -157,11 +155,11 @@ class Table extends THREE.Object3D {
             bevelEnabled: false
         }
 
-        let sideMaterial = new THREE.MeshPhongMaterial({
+        let sideMaterial = new THREE.MeshStandardMaterial({
             color: 0xE5E4E2,
             side: THREE.DoubleSide,
             specular: 0xFFFFFF,
-            shininess: 80
+            metalness: 0
         });
         let sideGeometry = new THREE.ExtrudeGeometry(sideShape, sideExtrudeSettings);
         sideExtrudeSettings.steps = 26;
@@ -178,19 +176,15 @@ class Table extends THREE.Object3D {
         topPlane.rotation.set(90 * Math.PI / 180, -90 * Math.PI / 180, 180 * Math.PI / 180);
         bottomPlane.rotation.set(90 * Math.PI / 180, -90 * Math.PI / 180, 90 * Math.PI / 180);
 
-        leftSidePlane.position.set(-13, 25, 0);
-        rightSidePlane.position.set(13, 25, 0);
-        topPlane.position.set(11, 25, 0);
-        bottomPlane.position.set(11, -25, 0);
+        leftSidePlane.position.set(-13, 25, 0.2);
+        rightSidePlane.position.set(13, 25, 0.2);
+        topPlane.position.set(13, 25, 0.2);
+        bottomPlane.position.set(13, -25, 0.2);
 
-
-
-
-        let bottomGeometry = new THREE.CubeGeometry(28.04, 52.04, 4);
+        let bottomGeometry = new THREE.CubeGeometry(28, 52, 4);
         let bottom = new THREE.Mesh(bottomGeometry, sideMaterial);
 
-        bottom.position.set(0, 0, -1.87);
-
+        bottom.position.set(0, 0, -1.8);
 
 
         // Shadows

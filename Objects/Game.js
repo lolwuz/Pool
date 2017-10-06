@@ -10,6 +10,7 @@ class Game{
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.shadowMapSoft = true;
+  
         
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
@@ -90,33 +91,40 @@ class Game{
         this.scene.add(this.helper);
         
         // Lights 
-        let ambient = new THREE.AmbientLight(0xffffdd, 0.1);
-        
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
-        directionalLight.position.set(0, 10, 20);
+        let ambient = new THREE.AmbientLight(0xffffdd, 0.2);
 
-        let pointLight1 = new THREE.PointLight( 0xffffff, 0.2, 100 );
-        pointLight1.position.set( 0, -12, 20 );
+        let pointLight1 = new THREE.PointLight( 0xffffff, 0.4, 100 );
+        pointLight1.position.set( -5, -12, 20 );
         pointLight1.castShadow = true;
 
-        let pointLight2 = new THREE.PointLight( 0xffffff, 0.2, 100 );
-        pointLight2.position.set( 0, 12, 20);
+        let pointLight2 = new THREE.PointLight( 0xffffff, 0.4, 100 );
+        pointLight2.position.set( 5, -12, 20);
         pointLight2.castShadow = true;
         
+        let pointLight3 = new THREE.PointLight( 0xffffff, 0.4, 100 );
+        pointLight3.position.set( -5, 12, 20 );
+        pointLight3.castShadow = true;
+
+        let pointLight4 = new THREE.PointLight( 0xffffff, 0.4, 100 );
+        pointLight4.position.set( 5, 12, 20);
+        pointLight4.castShadow = true;
+        
         // Add orbit controlls to the scene.
-        this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
-        this.controls.target = new THREE.Vector3(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0);
+        this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );     
         this.controls.maxDistance = 100;
         this.controls.minDistance = 5;
         this.controls.enablePan = false;
         this.controls.enableRotate = true;
         this.controls.minPolarAngle = Math.PI / 6;
         this.controls.maxPolarAngle = Math.PI / 2;
-        
-        this.scene.add( directionalLight );
+        this.controls.target = this.ballArray[0].position;
+        this.controls.update();
+      
         this.scene.add( ambient );
         this.scene.add( pointLight1 );
         this.scene.add( pointLight2 );
+        this.scene.add( pointLight3 );
+        this.scene.add( pointLight4 );
     
         
         // Add Clock 
@@ -140,14 +148,12 @@ class Game{
             this.ballArray[i].move(deltaTime);
         }
         // Update Cue movement
-        this.cue.update(this.controls.object);
-        //this.helper.checkCollide(this.table, this.cue.selectedBall.position, this.cue.rotation.z);
-
         
-        // Set camera to rotate and look at selected ball
-        // Add orbit controlls to the scene.
-        this.controls.target = new THREE.Vector3(this.cue.selectedBall.position.x, this.cue.selectedBall.position.y, 0);
-     
+        this.controls.target = this.cue.selectedBall.position;
+        this.controls.update();
+        
+        this.cue.update(this.controls);
+        //this.helper.checkCollide(this.table, this.cue.selectedBall.position, this.cue.rotation.z);
 
         // Update camera
         this.renderer.render(this.scene, this.camera);
