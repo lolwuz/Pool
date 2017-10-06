@@ -1,8 +1,10 @@
-class Cue extends THREE.Mesh{
-    constructor(ball){
+class Cue extends THREE.Mesh {
+    constructor(ball) {
         // let woodTexture = new THREE.TextureLoader().load("./3D/texture/cuewood.jpg");
         let geometry = new THREE.CylinderGeometry(0.1, 0.15, 12, 32, 32);
-        let material = new THREE.MeshPhongMaterial( { color: 0xFFFFFF } );
+        let material = new THREE.MeshPhongMaterial({
+            color: 0xFFFFFF
+        });
         super(geometry, material);
         this.geometry.translate(0, -7, 0);
         this.castShadow = true;
@@ -15,25 +17,28 @@ class Cue extends THREE.Mesh{
         this.rotateZ(degrees);
     };
 
-    setBall(ball){
+    setBall(ball) {
         this.selectedBall = ball;
         this.position.set(ball.position.x, ball.position.y, ball.position.z);
     };
 
-    shoot(force){
+    shoot(force) {
         // can't shoot while cue is invisible
         if (this.visible) {
             let angle = this.rotation.z - (-90 * Math.PI / 180);
             let speedX = Math.cos(angle) * force;
             let speedY = Math.sin(angle) * force;
-            this.selectedBall.setSpeed({x: speedX, y: speedY});
+            this.selectedBall.setSpeed({
+                x: speedX,
+                y: speedY
+            });
         }
 
         // temp hide cue
         this.visible = false;
     };
 
-    update(camera){
+    update(camera) {
         let dx = this.selectedBall.position.x - camera.position.x;
         let dy = this.selectedBall.position.y - camera.position.y;
 

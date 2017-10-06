@@ -57,26 +57,34 @@ class Ball extends THREE.Mesh {
             let velocityB = Math.sqrt(Math.pow(Ball.speed.y, 2) + Math.pow(Ball.speed.x, 2));
             let collisionAngle = Math.atan2(dy, dx);
 
-            let aSpeedX = (2 * velocityB * Math.cos(movementAngleB - collisionAngle) / 2)
-                * Math.cos(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2);
-            let aSpeedY = (2 * velocityB * Math.cos(movementAngleB - collisionAngle) / 2)
-                * Math.sin(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2);
+            let aSpeedX = (2 * velocityB * Math.cos(movementAngleB - collisionAngle) / 2) *
+                Math.cos(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2);
+            let aSpeedY = (2 * velocityB * Math.cos(movementAngleB - collisionAngle) / 2) *
+                Math.sin(collisionAngle) + velocityA * Math.sin(movementAngleA - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2);
 
-            let bSpeedX = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2)
-                * Math.cos(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2);
-            let bSpeedY = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2)
-                * Math.sin(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2);
+            let bSpeedX = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2) *
+                Math.cos(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.cos(collisionAngle + Math.PI / 2);
+            let bSpeedY = (2 * velocityA * Math.cos(movementAngleA - collisionAngle) / 2) *
+                Math.sin(collisionAngle) + velocityB * Math.sin(movementAngleB - collisionAngle) * Math.sin(collisionAngle + Math.PI / 2);
 
             // Reset position outside of collision bounds.
             this.position.x = Ball.position.x - (Math.round(Math.cos(collisionAngle) * 1000) / 1000);
             this.position.y = Ball.position.y - (Math.round(Math.sin(collisionAngle) * 1000) / 1000);
 
-            this.setSpeed({x: aSpeedX, y: aSpeedY});
-            Ball.setSpeed({x: bSpeedX, y: bSpeedY});
+            this.setSpeed({
+                x: aSpeedX,
+                y: aSpeedY
+            });
+            Ball.setSpeed({
+                x: bSpeedX,
+                y: bSpeedY
+            });
         }
     };
 
     checkCollisionTable(Table) {
+        
+        /*
         let direction = new THREE.Vector3(this.speed.x, this.speed.y, 0);
         this.raycaster.set(this.position, direction);
 
@@ -128,7 +136,16 @@ class Ball extends THREE.Mesh {
             let newPos = lastIntersect[0].point.add(antiNormal.multiplyScalar(-0.5));
             console.log(newPos);
             this.position.x = newPos.x;
-            this.position.y = newPos.y;
+            this.position.y = newPos.y;   
+        }
+        */
+        
+        // Reverse speed when boundary off the table have been reached.
+        if( this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x){
+            this.speed.x *= -1;
+        }
+        if( this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y){
+            this.speed.y *= -1;
         }
     }
 
