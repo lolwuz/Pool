@@ -179,10 +179,7 @@ class Table extends THREE.Object3D {
         
         // Shadows
         field.receiveShadow = true;
-        clothSideLeftTop.receiveShadow = true;
-        clothSideRightTop.receiveShadow = true;
-        clothSideLeftBottom.receiveShadow = true;
-        clothSideRightBottom.receiveShadow = true;
+    
         
         this.add( field ); 
         this.add( woodSideLeftTop );
