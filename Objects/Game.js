@@ -211,7 +211,6 @@ class Game {
                 }
             }
             this.ballArray[i].checkCollisionTable(this.table);
-            // this.ballArray[i].checkCollisionHole(this.table);
             this.ballArray[i].move(deltaTime);
         }
         // Update Cue movement
@@ -228,4 +227,18 @@ class Game {
         // Update camera
         this.renderer.render(this.scene, this.camera);
     };
+
+    // Check which balls are pocketed this turn and add them to the current players' ballArray.
+    ballsPocketed() {
+        for (let i = 0; i < this.ballArray.length; i++) {
+            if (this.ballArray[i].pocketed) {
+                if (this.players[0].isMyTurn) {
+                    this.players[0].pocketBall(this.ballArray[i]);
+                } else {
+                    this.players[1].pocketBall(this.ballArray[i]);
+                }
+                this.ballArray.splice(i);
+            }
+        }
+    }
 }
