@@ -7,10 +7,6 @@ class Game{
         this.camera.up.set( 0, 0, 1 );
         this.renderer = new THREE.WebGLRenderer({ canvas: poolCanvas,  antialias: true});
         this.renderer.setClearColor(0xCCCCFF, 1);
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        this.renderer.shadowMapSoft = true;
-  
         
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
@@ -95,19 +91,15 @@ class Game{
 
         let pointLight1 = new THREE.PointLight( 0xffffff, 0.4, 100 );
         pointLight1.position.set( -5, -12, 20 );
-        pointLight1.castShadow = true;
 
         let pointLight2 = new THREE.PointLight( 0xffffff, 0.4, 100 );
         pointLight2.position.set( 5, -12, 20);
-        pointLight2.castShadow = true;
         
         let pointLight3 = new THREE.PointLight( 0xffffff, 0.4, 100 );
         pointLight3.position.set( -5, 12, 20 );
-        pointLight3.castShadow = true;
 
         let pointLight4 = new THREE.PointLight( 0xffffff, 0.4, 100 );
         pointLight4.position.set( 5, 12, 20);
-        pointLight4.castShadow = true;
         
         // Add orbit controlls to the scene.
         this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );     
