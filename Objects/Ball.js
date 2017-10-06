@@ -91,30 +91,29 @@ class Ball extends THREE.Mesh {
             if (distanceOfIntersect < 0.5) {
                 console.log("hit");
 
-                if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.topLeft.x)) {
-                    // this.visible = false;
-                    console.log("near pocket");
-                }
+                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.topLeft.x)) {
+                //     // this.visible = false;
+                //     console.log("near pocket");
+                // }
+                //
+                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.topRight.x)) {
+                //     // this.visible = false;
+                //     console.log("near pocket");
+                // }
+                //
+                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.bottomLeft.x)) {
+                //     // this.visible = false;
+                //     console.log("near pocket");
+                // }
+                //
+                // if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.bottomRight.x)) {
+                //     // this.visible = false;
+                //     console.log("near pocket");
+                // }
 
-                if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.topRight.x)) {
-                    // this.visible = false;
-                    console.log("near pocket");
-                }
-
-                if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.bottomLeft.x)) {
-                    // this.visible = false;
-                    console.log("near pocket");
-                }
-
-                if (Ball.isNumNearOtherNum(this.position.x, Table.dimensions.bottomRight.x)) {
-                    // this.visible = false;
-                    console.log("near pocket");
-                }
-
-                let newDirection = direction.reflect(intersection.face.normal);
                 // Set new direction
-                newDirection.reflect(intersection.face.normal);
                 let newDirection = new THREE.Vector3(direction.x, direction.y, direction.z);
+                newDirection.reflect(intersection.face.normal);
 
                 this.speed.x = newDirection.x;
                 this.speed.y = newDirection.y;
