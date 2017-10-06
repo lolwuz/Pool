@@ -71,7 +71,7 @@ class Ball extends THREE.Mesh {
     };
 
     checkCollisionTable(Table) {
-        
+
         /*
         let direction = new THREE.Vector3(this.speed.x, this.speed.y, 0);
         this.raycaster.set(this.position, direction);
@@ -110,7 +110,7 @@ class Ball extends THREE.Mesh {
 
         if (!this.pocketed) {
             // Reverse speed when boundary off the table have been reached.
-            if (this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1< Table.dimensions.topLeft.x) {
+            if (this.position.x + 1 > Table.dimensions.topRight.x || this.position.x - 1 < Table.dimensions.topLeft.x) {
                 this.speed.x *= -1;
             }
             if (this.position.y + 1 > Table.dimensions.topRight.y || this.position.y - 1 < Table.dimensions.bottomRight.y) {
@@ -134,12 +134,12 @@ class Ball extends THREE.Mesh {
             if (this.position.x + 1.4 > Table.dimensions.bottomRight.x && this.position.y - 1.4 < Table.dimensions.bottomRight.y) {
                 this.pocket();
             }
-            // MiddleLeft Hole
-            if (this.position.x - 1.4 < Table.dimensions.topLeft.x - 0.5 && this.position.y + 1.4 > (Table.dimensions.topLeft.y + Table.dimensions.bottomLeft.y) / 2) {
+            // // MiddleLeft Hole
+            if (this.position.x + - 1 < Table.dimensions.topLeft.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
                 this.pocket();
             }
             // MiddleRight Hole
-            if (this.position.x + 1.4 > Table.dimensions.topRight.x + 0.5 && this.position.y + 1.4 > (Table.dimensions.topRight.y + Table.dimensions.bottomRight.y) / 2) {
+            if (this.position.x + 1 > Table.dimensions.topRight.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
                 this.pocket();
             }
         }
