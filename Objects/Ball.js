@@ -119,27 +119,27 @@ class Ball extends THREE.Mesh {
 
             // Check hole collision
             // TopLeft Hole
-            if (this.position.x - 1.4 < Table.dimensions.topLeft.x && this.position.y + 1.4 > Table.dimensions.topLeft.y) {
+            if (this.position.x - 1.3 < Table.dimensions.topLeft.x && this.position.y + 1.3 > Table.dimensions.topLeft.y) {
                 this.pocket();
             }
             // TopRight Hole
-            if (this.position.x + 1.4 > Table.dimensions.topRight.x && this.position.y + 1.4 > Table.dimensions.topRight.y) {
+            if (this.position.x + 1.3 > Table.dimensions.topRight.x && this.position.y + 1.3 > Table.dimensions.topRight.y) {
                 this.pocket();
             }
             // BottomLeft Hole
-            if (this.position.x - 1.4 < Table.dimensions.bottomLeft.x && this.position.y - 1.4 < Table.dimensions.bottomLeft.y) {
+            if (this.position.x - 1.3 < Table.dimensions.bottomLeft.x && this.position.y - 1.3 < Table.dimensions.bottomLeft.y) {
                 this.pocket();
             }
             // BottomRight Hole
-            if (this.position.x + 1.4 > Table.dimensions.bottomRight.x && this.position.y - 1.4 < Table.dimensions.bottomRight.y) {
+            if (this.position.x + 1.3 > Table.dimensions.bottomRight.x && this.position.y - 1.3 < Table.dimensions.bottomRight.y) {
                 this.pocket();
             }
             // // MiddleLeft Hole
-            if (this.position.x + - 1 < Table.dimensions.topLeft.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
+            if (this.position.x - 0.5 < Table.dimensions.topLeft.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
                 this.pocket();
             }
             // MiddleRight Hole
-            if (this.position.x + 1 > Table.dimensions.topRight.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
+            if (this.position.x + 0.5 > Table.dimensions.topRight.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
                 this.pocket();
             }
         }
