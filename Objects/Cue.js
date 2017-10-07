@@ -51,8 +51,8 @@ class Cue extends THREE.Mesh {
         // show cue again when speed of ball is < ...
         if (Math.abs(this.selectedBall.speed.y) <= 0.002 && Math.abs(this.selectedBall.speed.x) <= 0.002) {
             if(!this.visible){
-                control.target = this.selectedBall.position;
-                control.update();  
+                //control.target = this.selectedBall.position;
+                //control.update();  
             }
             this.visible = true;
         }

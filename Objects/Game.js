@@ -6,11 +6,10 @@ class Game {
 
         this.camera.up.set(0, 0, 1);
         this.renderer = new THREE.WebGLRenderer({
-            canvas: poolCanvas,
-            antialias: true
+            canvas: poolCanvas
         });
         this.renderer.setClearColor(0x000000, 1);
-        this.renderer.shadowMapEnabled = false;
+        this.renderer.shadowMap.enabled = false;
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
@@ -153,12 +152,13 @@ class Game {
         // Add background 
         let earthGeometry = new THREE.SphereGeometry(100, 128, 128);
         let earthTexture = new THREE.TextureLoader().load("./textures/earth8k.jpg");
-        let earthBump = new THREE.TextureLoader().load("./textures/earth8kBumb.png");
         let earthMaterial = new THREE.MeshStandardMaterial({
             color: 0xFFFFFF,
             map: earthTexture,
-            bumpMap: earthBump,
-            bumpScale: 0.1
+            bumpMap: earthTexture,
+            bumpScale: 1,
+            metalness: 0,
+            roughness: 0.3
         });
         this.earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
         this.earthMesh.position.set(200, 0, 0);
