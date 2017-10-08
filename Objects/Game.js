@@ -6,6 +6,7 @@ class Game {
 
         this.camera.up.set(0, 0, 1);
         this.renderer = new THREE.WebGLRenderer({
+            antialias: true,
             canvas: poolCanvas
         });
         this.renderer.setClearColor(0x000000, 1);
@@ -142,7 +143,7 @@ class Game {
 
         // Add orbit controlls to the scene.
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.maxDistance = 50;
+        this.controls.maxDistance = 40;
         this.controls.minDistance = 5;
         this.controls.enablePan = false;
         this.controls.enableRotate = true;
@@ -201,7 +202,7 @@ class Game {
         this.scene.add(spaceBottomSideMesh);
 
         // Add background 
-        let earthGeometry = new THREE.SphereGeometry(100, 128, 128);
+        let earthGeometry = new THREE.SphereGeometry(100, 128, 64);
         let earthTexture = new THREE.TextureLoader().load("./textures/earth8k.jpg");
         let earthMaterial = new THREE.MeshStandardMaterial({
             color: 0xFFFFFF,
@@ -275,7 +276,7 @@ class Game {
         this.controls.update();
 
         // Update earth rotation
-        this.earthMesh.rotation.z += 0.001 * deltaTime;
+        this.earthMesh.rotation.z += 0.0001 * deltaTime;
 
         this.cue.update(this.controls);
         //this.helper.checkCollide(this.table, this.cue.selectedBall.position, this.cue.rotation.z);
