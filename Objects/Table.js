@@ -219,8 +219,10 @@ class Table extends THREE.Object3D {
         this.add(bottomPlane);
 
         this.add(bottom);
-
-        this.collidableMeshList.push(clothBottom);
-
+        
+        for(let i = 0; i < this.children.length; i++){
+            this.children[i].castShadow = true;
+            this.children[i].receiveShadow = true;
+        }
     }
 }

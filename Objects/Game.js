@@ -10,6 +10,7 @@ class Game {
         });
         this.renderer.setClearColor(0x000000, 1);
         this.renderer.shadowMap.enabled = false;
+        this.renderer.shadowMap.type = THREE.BasicShadowMap;
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
@@ -25,26 +26,27 @@ class Game {
 					];
         let cubeMaterial = new THREE.CubeTextureLoader().load(urls);
         cubeMaterial.format = THREE.RGBFormat;
-        
+
         let shader = THREE.ShaderLib.cube;
         shader.uniforms.tCube.value = cubeMaterial;
 
         let material = new THREE.ShaderMaterial({
-                fragmentShader: shader.fragmentShader,
-                vertexShader: shader.vertexShader,
-                uniforms: shader.uniforms,
-                depthWrite: false,
-                side: THREE.DoubleSide
+            fragmentShader: shader.fragmentShader,
+            vertexShader: shader.vertexShader,
+            uniforms: shader.uniforms,
+            depthWrite: false,
+            side: THREE.DoubleSide
         });
-        
+
 
 
         this.cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), material);
         this.scene.add(this.cubeMesh);
-    
+
 
         // Add table and set postion
         this.table = new Table();
+        this.table.castShadow = true;
         this.scene.add(this.table);
         this.table.position.set(0, 0, -1);
 
@@ -140,7 +142,7 @@ class Game {
 
         // Add orbit controlls to the scene.
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.maxDistance = 100;
+        this.controls.maxDistance = 50;
         this.controls.minDistance = 5;
         this.controls.enablePan = false;
         this.controls.enableRotate = true;
@@ -148,7 +150,56 @@ class Game {
         this.controls.maxPolarAngle = Math.PI / 2;
         this.controls.target = this.ballArray[0].position;
         this.controls.update();
+
+        // Add spaceship     
+        let spaceGroundGeometry = new THREE.BoxGeometry(150, 300, 2);
+        let spaceGroundTexture = new THREE.TextureLoader().load("./textures/hulltexture.png", function (texture) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            texture.offset.set(0, 0);
+            texture.repeat.set(6, 12);
+        });
         
+        let spaceGroundMaterial = new THREE.MeshStandardMaterial({
+            color: 0xb4b4b4,
+            map: spaceGroundTexture,
+            metalness: 0.2,
+            roughtness: 0.2
+        });
+        let spaceGroundMesh = new THREE.Mesh(spaceGroundGeometry, spaceGroundMaterial);
+        let spaceTopMesh = new THREE.Mesh(spaceGroundGeometry, spaceGroundMaterial);
+
+        let spaceSideGeometry = new THREE.BoxGeometry(2, 300, 80);
+        let spaceTopGeometry = new THREE.BoxGeometry(2, 300, 160);
+        let spaceSideMaterial = new THREE.MeshStandardMaterial({
+            color: 0x5ccdff,
+            transparent: true,
+            opacity: 0.4,
+            metalness: 0
+        });
+
+
+        let spaceLeftSideMesh = new THREE.Mesh(spaceSideGeometry, spaceSideMaterial);
+        let spaceRightSideMesh = new THREE.Mesh(spaceSideGeometry, spaceSideMaterial);
+        let spaceTopSideMesh = new THREE.Mesh(spaceTopGeometry, spaceGroundMaterial);
+        let spaceBottomSideMesh = new THREE.Mesh(spaceTopGeometry, spaceGroundMaterial);
+
+        spaceGroundMesh.position.set(0, 0, -12);
+        spaceTopMesh.position.set(0, 0, 40);  
+        spaceLeftSideMesh.position.set(73, 0, -2);
+        spaceRightSideMesh.position.set(-73, 0, -2);
+        spaceTopSideMesh.position.set(0, 150, -2);
+        spaceBottomSideMesh.position.set(0, -150, -2);
+        
+        spaceTopSideMesh.rotation.set(0, 0, -90 * Math.PI / 180);
+        spaceBottomSideMesh.rotation.set(0, 0, 90 * Math.PI / 180);
+
+        this.scene.add(spaceGroundMesh);
+        this.scene.add(spaceTopMesh);
+        this.scene.add(spaceLeftSideMesh);
+        this.scene.add(spaceRightSideMesh);
+        this.scene.add(spaceTopSideMesh);
+        this.scene.add(spaceBottomSideMesh);
+
         // Add background 
         let earthGeometry = new THREE.SphereGeometry(100, 128, 128);
         let earthTexture = new THREE.TextureLoader().load("./textures/earth8k.jpg");
@@ -163,39 +214,44 @@ class Game {
         this.earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
         this.earthMesh.position.set(200, 0, 0);
         this.scene.add(this.earthMesh);
-        
+
         //let floorGeometry = new THREE.CubeGemetry(); 
-        
+
         // Lights 
         let ambient = new THREE.AmbientLight(0xFFFFFF, 0.2);
         let sun = new THREE.SpotLight(0xFFFFFF, 1);
-        sun.position.set(40, 50, 40);
-        sun.angle = 1.05;
+        sun.position.set(100, 200, 50);
+        sun.angle = 0.5;
         sun.target = this.earthMesh;
-        
+
         let pointLight1 = new THREE.PointLight(0xFFFFFF, 0.4, 100);
         pointLight1.position.set(-5, -12, 20);
         pointLight1.castShadow = true;
 
         let pointLight2 = new THREE.PointLight(0xFFFFFF, 0.4, 100);
         pointLight2.position.set(5, -12, 20);
-        pointLight1.castShadow = true;
+        pointLight2.castShadow = true;
 
         let pointLight3 = new THREE.PointLight(0xFFFFFF, 0.4, 100);
         pointLight3.position.set(-5, 12, 20);
-        pointLight1.castShadow = true;
+        pointLight3.castShadow = true;
 
         let pointLight4 = new THREE.PointLight(0xFFFFFF, 0.4, 100);
         pointLight4.position.set(5, 12, 20);
-        pointLight1.castShadow = true;
-        
+        pointLight4.castShadow = true;
+
+        let floatLight = new THREE.PointLight(0x0089ff, 0.4, 100);
+        floatLight.position.set(0, 0, -5);
+
+
         this.scene.add(pointLight1);
         this.scene.add(pointLight2);
         this.scene.add(pointLight3);
         this.scene.add(pointLight4);
         this.scene.add(sun);
         this.scene.add(ambient);
-        
+        this.scene.add(floatLight);
+
         // Add Clock 
         this.clock = new THREE.Clock();
 
@@ -217,7 +273,7 @@ class Game {
 
         this.controls.target = this.cue.selectedBall.position;
         this.controls.update();
-        
+
         // Update earth rotation
         this.earthMesh.rotation.z += 0.001 * deltaTime;
 
