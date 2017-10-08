@@ -135,11 +135,11 @@ class Ball extends THREE.Mesh {
                 this.pocket();
             }
             // // MiddleLeft Hole
-            if (this.position.x - 0.5 < Table.dimensions.topLeft.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
+            if (this.position.x - 0.5 < Table.dimensions.topLeft.x && (this.position.y < 1.5 && this.position.y > -1.5)) {
                 this.pocket();
             }
             // MiddleRight Hole
-            if (this.position.x + 0.5 > Table.dimensions.topRight.x && (this.position.y < 1.2 && this.position.y > -1.2)) {
+            if (this.position.x + 0.5 > Table.dimensions.topRight.x && (this.position.y < 1.5 && this.position.y > -1.5)) {
                 this.pocket();
             }
         }
